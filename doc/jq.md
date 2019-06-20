@@ -1,4 +1,6 @@
-# jq - json from the command line
+# jq and curl
+
+## jq
 
 Links:
 
@@ -13,7 +15,29 @@ Suggestions:
 * Invoke `man jq` and read the SYNOPSIS/FILTERS sections.  Scan the options.
 * Try the Tutorial
 
-## Overview
+## curl
+
+Links:
+
+* [Homepage](https://curl.haxx.se/)
+* [Everything curl](https://ec.haxx.se/)
+* [HTTP scripting tutorial](https://curl.haxx.se/docs/httpscripting.html)
+
+Suggestions:
+
+* Read the Homepage
+* Invoke `man curl` and read the SYNOPSIS/DESCRIPTION/URL sections.  Scan the options.
+* Read the [How it started](https://ec.haxx.se/curl-started.html), [The name](https://ec.haxx.se/curl-name.html), and [What does curl do?](https://ec.haxx.se/curl-does.html) sections of the "Everything curl" book.
+
+Also:
+
+* Read the [Rule of Composition](http://www.catb.org/~esr/writings/taoup/html/ch01s06.html#id2877684)
+* Read [Doug McIlroy](https://en.wikipedia.org/wiki/Douglas_McIlroy)'s summarization of [the unix philosophy](http://www.catb.org/~esr/writings/taoup/html/ch01s06.html)
+  > This is the Unix philosophy: Write programs that do one thing and do it well. Write programs to work together. Write programs to handle text streams, because that is a universal interface.
+* Read this quote from [an interview](https://interviews.slashdot.org/story/04/10/18/1153211/rob-pike-responds) with [Rob Pike](https://en.wikipedia.org/wiki/Rob_Pike)
+  > Q: Given the nature of current operating systems and applications, do you think the idea of "one tool doing one job well" has been abandoned? A: Those days are dead and gone and the eulogy was delivered by Perl.
+
+## jq Overview
 
 **SYNOPSIS**
 
@@ -34,7 +58,7 @@ General idea is that composition will be a thing and the style is pipes, much li
 
 > Note: it is important to mind the shell's quoting rules. As a general rule it's best to always quote (with single-quote characters) the  jq  program, as  too  many  characters  with  special  meaning  to  jq  are  also shell meta-characters.
 
-Echo/pretty print (using HEREDOCS to pass in JSON).
+Echo/pretty print (using [HEREDOCS](doc/shell#HEREDOC) to pass in JSON).  Notice the input can be any JSON blob and whitespace is not an issue.
 
 ```bash
 jq '.' <<DOC
@@ -56,7 +80,7 @@ DOC
 # }
 ```
 
-Selection in an object (using a file to pass in JSON).
+Selection in an object.  Note the JSON can come from a file.
 
 ```bash
 cat > object.json <<DOC
@@ -73,7 +97,7 @@ jq '.["foo"]' object.json
 # 42
 ```
 
-Selection in an array (similar objects version, but with integers).
+Selection in an array (similar to the generalized object selection, but with integers).
 
 ```bash
 cat > array.json <<DOC
@@ -276,14 +300,4 @@ jq -c --slurp '.[] | {name: .name, num: 42}' file_a file_b
 
 jq -c --slurp '. | map({name: .name, num: 42})' file_a file_b
 # [{"name":"a1","num":42},{"name":"a2","num":42},{"name":"b1","num":42}]
-```
-
-# Real World Examples
-
-```
-. | to_entries | .[] |
-.key as $project |
-.value.":objects"[] |
-[$project, .] |
-join(" ")
 ```
