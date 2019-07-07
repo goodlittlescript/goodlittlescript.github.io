@@ -1,0 +1,71 @@
+#!/bin/bash
+#############################################################################
+cmdbash_usage () {
+printf "%s" "\
+usage: cmdbash [options] NAMED_ARG VARIABLE_ARGS...
+
+  A shell-friendly command in bash.  Option parsing is limited to short
+  options but allow options to be specified anywhere in ARGV.
+
+examples:
+
+  ./bin/cmdbash -h
+  ./bin/cmdbash abc
+  ./bin/cmdbash abc x y z
+  ./bin/cmdbash abc x y z -f override
+  ./bin/cmdbash -f override abc x y z
+  ./bin/cmdbash -f override abc x y z -h
+
+  export CMDBASH_FLAG=override
+  ./bin/cmdbash abc x y z
+
+  ./bin/cmdbash
+  ./bin/cmdbash -x
+
+options:
+
+  -h        prints help
+  -f FLAG   option with a value
+
+"
+}
+flag="${CMDBASH_FLAG:-default}"
+args=""
+while [ $OPTIND -le $# ]
+do
+  if getopts "hf:" option
+  then
+    case "$option" in
+      (f) flag="$OPTARG" ;;
+      (h) cmdbash_usage
+          exit 0 ;;
+      (*) cmdbash_usage | head -n 1 >&2
+          exit 2 ;;
+    esac
+  else
+    args="$args \"\${$OPTIND}\""
+    OPTIND=$(($OPTIND + 1))
+  fi
+done
+eval set -- "$args"
+
+if [ $# -lt 1 ]
+then
+  printf "no NAMED_ARG specified\n" >&2
+  exit 1
+fi
+
+#############################################################################
+write_output () {
+  key="$1"; value="$2";
+  printf "%-15s %s\n" "$key" "$value"
+}
+#############################################################################
+named_arg="$1"
+shift 1
+
+write_output "flag" "$flag"
+write_output "named_arg" "$named_arg"
+for variable_arg in "$@"
+do write_output "variable_arg" "$variable_arg"
+done

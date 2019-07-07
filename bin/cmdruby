@@ -1,0 +1,68 @@
+#!/usr/bin/env ruby
+############################################################################
+begin
+  require 'optparse'
+
+  options = {
+    flag: ENV['CMDRUBY_FLAG'] || 'default',
+  }
+  OptionParser.new do |opts|
+    opts.banner = %{
+usage: cmdruby [options] NAMED_ARG VARIABLE_ARGS...
+
+  A shell-friendly command in ruby.
+
+examples:
+
+  ./bin/cmdruby -h
+  ./bin/cmdruby abc
+  ./bin/cmdruby abc x y z
+  ./bin/cmdruby abc x y z -f override
+  ./bin/cmdruby --flag override abc x y z
+  ./bin/cmdruby -f override abc x y z -h
+
+  export CMDRUBY_FLAG=override
+  ./bin/cmdruby abc x y z
+
+  ./bin/cmdruby
+  ./bin/cmdruby -x
+
+options:
+
+}.lstrip
+
+    opts.on("-h", "--help", "print this help") do
+      puts opts
+      puts
+      exit
+    end
+
+    opts.on("-f", "--flag FLAG", "option with a value (#{options[:flag]})") do |value|
+      options[:flag] = value
+    end
+
+  end.parse!
+
+  if ARGV.length < 1
+    STDERR.puts "no NAMED_ARG specified"
+    exit 1
+  end
+
+  ############################################################################
+  def write_output(key, value)
+    puts "%-15s %s\n" % [key, value]
+  end
+  ############################################################################
+  named_arg, *args = ARGV.dup; ARGV.clear
+
+  write_output "flag", options[:flag]
+  write_output "named_arg", named_arg
+  args.each do |variable_arg|
+    write_output "variable_arg", variable_arg
+  end
+
+rescue Interrupt
+  exit 130
+rescue Errno::EPIPE
+  exit 0
+end
