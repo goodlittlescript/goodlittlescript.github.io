@@ -1,0 +1,87 @@
+#!/bin/bash
+
+test_cmd_with_named_arg () {
+./bin/cmdbash abc | assert_output "\
+option          false
+value           default
+named_arg       abc
+"
+}
+
+test_cmd_with_variable_args () {
+./bin/cmdbash abc x y z | assert_output "\
+option          false
+value           default
+named_arg       abc
+variable_arg    x
+variable_arg    y
+variable_arg    z
+"
+}
+
+test_options_can_go_anywhere () {
+./bin/cmdbash -v override abc x y z -o | assert_output "\
+option          true
+value           override
+named_arg       abc
+variable_arg    x
+variable_arg    y
+variable_arg    z
+"
+}
+
+#
+# -h
+#
+
+test_h_prints_help () {
+./bin/cmdbash -h | head -n 1 | assert_output "\
+usage: cmdbash [options] NAMED_ARG VARIABLE_ARGS...
+"
+}
+
+#
+# -o
+#
+
+test_o_sets_option_to_true () {
+./bin/cmdbash abc -o | grep option | assert_output "\
+option          true
+"
+}
+
+#
+# -v
+#
+
+test_v_sets_value () {
+./bin/cmdbash abc -v override | grep value | assert_output "\
+value           override
+"
+}
+
+test_set_value_via_ENV_variable () {
+export CMDBASH_VALUE=override
+./bin/cmdbash abc | grep value | assert_output "\
+value           override
+"
+}
+
+#
+# errors
+#
+
+test_non_zero_exit_for_no_named_arg_specified () {
+output="$(./bin/cmdbash 2>&1)"
+assert_status 1 $?
+
+cat <<<"$output" | assert_output "\
+no NAMED_ARG specified
+"
+}
+
+test_non_zero_exit_for_unknown_flag () {
+! ./bin/cmdbash -x
+}
+
+. ts

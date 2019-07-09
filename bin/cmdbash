@@ -12,11 +12,11 @@ examples:
   ./bin/cmdbash -h
   ./bin/cmdbash abc
   ./bin/cmdbash abc x y z
-  ./bin/cmdbash abc x y z -f override
-  ./bin/cmdbash -f override abc x y z
-  ./bin/cmdbash -f override abc x y z -h
+  ./bin/cmdbash abc x y z -v override
+  ./bin/cmdbash -v override abc x y z -o
+  ./bin/cmdbash -v override abc x y z -o -h
 
-  export CMDBASH_FLAG=override
+  export CMDBASH_VALUE=override
   ./bin/cmdbash abc x y z
 
   ./bin/cmdbash
@@ -25,22 +25,25 @@ examples:
 options:
 
   -h        prints help
-  -f FLAG   option with a value
+  -o        option
+  -v VALUE  option with a value
 
 "
 }
-flag="${CMDBASH_FLAG:-default}"
+option="false"
+value="${CMDBASH_VALUE:-default}"
 args=""
 while [ $OPTIND -le $# ]
 do
-  if getopts "hf:" option
+  if getopts "hov:" opt
   then
-    case "$option" in
-      (f) flag="$OPTARG" ;;
+    case "$opt" in
       (h) cmdbash_usage
           exit 0 ;;
+      (o) option="true" ;;
+      (v) value="$OPTARG" ;;
       (*) cmdbash_usage | head -n 1 >&2
-          exit 2 ;;
+          exit 1 ;;
     esac
   else
     args="$args \"\${$OPTIND}\""
@@ -57,14 +60,17 @@ fi
 
 #############################################################################
 write_output () {
-  key="$1"; value="$2";
+  local key="$1";
+  local value="$2";
+  shift 2
   printf "%-15s %s\n" "$key" "$value"
 }
 #############################################################################
 named_arg="$1"
 shift 1
 
-write_output "flag" "$flag"
+write_output "option" "$option"
+write_output "value" "$value"
 write_output "named_arg" "$named_arg"
 for variable_arg in "$@"
 do write_output "variable_arg" "$variable_arg"

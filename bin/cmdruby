@@ -4,7 +4,8 @@ begin
   require 'optparse'
 
   options = {
-    flag: ENV['CMDRUBY_FLAG'] || 'default',
+    option: false,
+    value: ENV['CMDRUBY_VALUE'] || 'default',
   }
   OptionParser.new do |opts|
     opts.banner = %{
@@ -17,11 +18,11 @@ examples:
   ./bin/cmdruby -h
   ./bin/cmdruby abc
   ./bin/cmdruby abc x y z
-  ./bin/cmdruby abc x y z -f override
-  ./bin/cmdruby --flag override abc x y z
-  ./bin/cmdruby -f override abc x y z -h
+  ./bin/cmdruby abc x y z -v override
+  ./bin/cmdruby -v override abc x y z -o
+  ./bin/cmdruby -v override abc x y z -o -h
 
-  export CMDRUBY_FLAG=override
+  export CMDRUBY_VALUE=override
   ./bin/cmdruby abc x y z
 
   ./bin/cmdruby
@@ -37,8 +38,12 @@ options:
       exit
     end
 
-    opts.on("-f", "--flag FLAG", "option with a value (#{options[:flag]})") do |value|
-      options[:flag] = value
+    opts.on("-o", "--[no-]option", "option (#{options[:option]})") do |input|
+      options[:option] = input
+    end
+
+    opts.on("-v", "--value VALUE", "option with a value (#{options[:value]})") do |input|
+      options[:value] = input
     end
 
   end.parse!
@@ -55,7 +60,8 @@ options:
   ############################################################################
   named_arg, *args = ARGV.dup; ARGV.clear
 
-  write_output "flag", options[:flag]
+  write_output "option", options[:option]
+  write_output "value", options[:value]
   write_output "named_arg", named_arg
   args.each do |variable_arg|
     write_output "variable_arg", variable_arg
@@ -65,4 +71,8 @@ rescue Interrupt
   exit 130
 rescue Errno::EPIPE
   exit 0
+rescue StandardError
+  raise if $DEBUG
+  warn $!.message
+  exit 1
 end

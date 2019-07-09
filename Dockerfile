@@ -12,7 +12,8 @@ RUN yes | unminimize && \
 # * curl
 # * jq
 # * ts
+# * ruby
 RUN apt-get update && \
-    apt-get install -y curl jq && \
+    apt-get install -y curl jq ruby && \
     curl -o /usr/local/bin/ts -L https://raw.githubusercontent.com/thinkerbot/ts/v2.0.2/bin/ts && \
     chmod +x /usr/local/bin/ts
