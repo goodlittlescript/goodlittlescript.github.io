@@ -127,4 +127,60 @@ Making these little programs really behave more like commands means adding optio
 
 # Gochas
 
+There are a few gotchas.  For example:
+
+```bash
+# outside a pipeline
+count=0
+count=$((count + 1))
+count=$((count + 1))
+count=$((count + 1))
+printf "the count: %s\n" "$count"
+
+# inside a pipeline
+count=0
+printf "%s\n" a b c |
+while read letter
+do
+  printf "letter: %s (%s)\n" "$letter" "$count"
+  count=$((count + 1))
+done
+printf "the count: %s\n" "$count"
+```
+
+The state in the pipeline is different than the state outside!  State is memory, literally memory.  Like RAM. What if this were written like this?
+
+```bash
+count=0
+ruby -e '
+  count=0
+  ["a", "b", "c"].each do |letter|
+    puts "letter: #{letter} (#{count})"
+    count += 1
+  end
+'
+printf "the count: %s\n" "$count"
+```
+
+Makes sense in this case, because ruby is clearly a completely different process... it has different memory so of course `count` inside and `count` outside are not the same.  What about this?
+
+```bash
+# inside parens (a subshell)
+count=0
+(
+  count=$((count + 1))
+  count=$((count + 1))
+  count=$((count + 1))
+  printf "the count: %s (inside)\n" "$count"
+)
+printf "the count: %s (outside)\n" "$count"
+```
+
+Maybe makes more sense.  The name subshell sorta implies another process.  The lesson is that pipelines make different processes.  If you're in a different process, then you get different memory, and that matters if you're using state even if the subprocess uses the same program as the parent process.
+
+
+
+
+
+
 What is happening with fds.  fork/exec.  What looks one way is actually just a politeness.  You need to see processes so you see when your memory stops and another process begins.

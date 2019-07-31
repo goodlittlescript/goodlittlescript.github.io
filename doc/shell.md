@@ -167,7 +167,7 @@ DOC
 ) | grep -h one
 ```
 
-## Day 2 Variables
+## Day 2 Variables and Loops
 
 **tldr; I double quote habitually to avoid problems.**
 
@@ -234,8 +234,6 @@ word="bird"
 $command $pattern $word
 ```
 
-## Day 2 Loops
-
 Loop with printf.
 
 ```bash
@@ -243,6 +241,11 @@ printf "%s\n" "0.0.0.1" "0.0.0.2" "0.0.0.3" "0.0.0.4"
 printf "%s\n" "1" "2" "3" "4"
 printf "%s %s\n" "1" "2" "3" "4"
 printf "%s %s\n" 1 one 2 two 3 one 4 one
+printf "%s %s\n" \
+  1 one \
+  2 two \
+  3 one \
+  4 one
 ```
 
 Loop with while.
@@ -278,6 +281,25 @@ do
      }'
 done
 ```
+
+## Day 4 fork/exec
+###########################################################
+# Bash Day 2
+* fork/exec -- argv, env, streams, exit status
+* executables
+  * shell variation (case/esac, $@, set, unset, export, functions)
+  * ruby variation for comparison
+* gotchas
+
+###########################################################
+# Kubernetes
+* Streams as input.  Add a rendering step.
+* Disconnect render from apply.
+* Now you have a deployment system.
+
+
+
+
 
 ## Appendix
 
@@ -344,3 +366,21 @@ DOC
 ```
 
 The `DOC` is arbitrary; any mixed-case word will do but it must be fully outdented at the end.  The goal is to have it not match any of the interior text (in some editors/languages with a similar metaphor you get code highlighting if you identify the language with the word like 'RUBY' or 'JSON').
+
+
+## Overview Shell
+
+Having the right concept of shell is very helpful, both in terms of understanding how to compose commands, and how the language itself is meant to work.  It is not a general-purpose language like Java, Python, Ruby, etc.  The goal of the shell is simply to launch processes.
+
+Processes consist of a very finite list of things, basically just:
+
+* The program itself
+* The args used to launch it
+* ENV variables
+* Plus system resources like file handles (stdin/stdout/stderr), memory, and cpu
+
+You can actually see this in the system commands used to literally launch files:
+
+* [exec](https://pubs.opengroup.org/onlinepubs/009695399/functions/exec.html
+* [Kernel#exec](https://ruby-doc.org/core-2.6.3/Kernel.html#method-i-exec) (ruby)
+* [os.exec](https://docs.python.org/2/library/os.html#process-management) (python)
