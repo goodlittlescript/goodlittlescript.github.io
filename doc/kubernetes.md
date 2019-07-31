@@ -123,4 +123,84 @@ kubectl get pods
 kubectl get pods --all-namespaces -v=9 2>&1 | grep GET
 ```
 
-Knowing this sets up the mental model to take into learning kubernetes.  The idea is to create loosely-coupled resource definitions (POST JSON blobs) that the control plane needs to translate into real resources (containers) on the nodes in the cluster.
+Knowing this sets up the mental model to take into learning kubernetes.  The idea is to create loosely-coupled resource definitions (POST JSON blobs) that the control plane needs to translate into real resources in the cluster.  AKA there will be urls and JSON request/response bodies.
+
+## Basic Workflow
+
+Define resources to describe what you want.  Apply them as a group, at once, so that anything left out can be pruned.
+
+All resources have this core shape:
+
+```
+apiVersion: ""    // required - one of `api-versions`, is base of REST url
+kind: ""          // required - one of `api-resources`, suffix of REST url
+metadata:
+  name: ""        // required - must be unique per kind
+  namespace: ""   // optional - defaults to current context
+  labels: {}      // optional - used to for selection, has restrictions
+  annotations: {} // optional - tracking info and stuff, generally unrestricted
+spec: {}          // one-of - the definition of the resource
+data: {}          // one-of - the data of the resource
+items: []         // one-of - occurs in List resources
+status: {}        // added by kubernetes
+```
+
+This is a good structure.  The apiVersion and kind route these objects to a handler, there is unstructured and structured design space.  The status part is excellent from an implementer standpoint too -- a standard place to save information.
+
+Due to the structure kubernetes can look at the data and know "this is new" or "this has changed".  As a result a group of resources definitions can be applied at once, which enables unspecified things to be identified as unwanted and pruned. It is a "declarative" way of managing resource (the "Advanced" way of managing things - a do-this-do-that "imperative" approach is the "Beginner" way).
+
+To reiterate - the idea is to define resources to describe what you want.  Apply them as a group, at once, so that anything left out can be pruned.  How do?
+
+## Apply a group of resource definitions
+
+Resource definitions can be fed to `kubectl apply` as stream of JSON objects, or they can be formed into a List resource, or (in recent versions) you can group them into files in a directory and provide that.  YAML is an alternate way to specify the JSON.  The metaphor is a stream so you can organize as you like.
+
+```bash
+cat resource.json resource.yml | kubectl apply -f -
+kubectl apply -f resource.json
+kubectl apply -k resources_dir
+```
+
+_Sidebar: kubectl apply does not have a good command line design... `-f` could easily be a list of files and if it were then neither `-f` nor `-k` would be needed. IMO it suggests the culture of the developers.  Kubernetes seems designed with web sensibilities and kubectl nails web things, and could be command line friendly, but isn't._
+
+```bash
+# pretend the command signature was: kubectl apply [FILES...]
+cat resource.json resource.yml | kubectl apply -
+kubectl apply resource.json resource.yml
+kubectl apply resources_dir/*
+```
+
+Resources are very verbose, so you will want to organize.  Also there's a problem - you need to line things up.  Imagine a kubernetes namespace as a bustling bazaar with independent people working in identifiable colors -- that is a cluster.  It is the way it works.
+
+* With prune you use labels and selectors to limit what is in scope - get it wrong and you may delete lots of stuff.
+* With services you need to use labels and selectors to pick which containers belong to the service.
+* You need to associate configmaps/secrets to pods, at the very least needing name coordination.
+
+This means you have to have a plan, then execute that plan by coordinating values in multiple places.  It is hard to do by hand.  Values may also vary by environment.  You need a template layer.  With high-minded shortsightedness, kubectl has intentionally not provided that so we have to.
+
+The general plan then:
+
+* Have a (name/label/annotation) plan
+* Template to make a stream of resource definitions using the plan
+* Apply with `kubectl apply --prune`
+* Profit
+
+_Sidebar: a google team achieved what the community could not, and convinced kubernetes to include [kustomize](https://kustomize.io/) into kubectl in recent versions -- they say it isn't templating but it amounts to the same thing.  It's a reasonable thing to imagine switching to it, especially when docker-for-mac updates._
+
+## A Plan
+
+Identify components made of related "kinds" of resources.  Connect with names to make units.   Pod + Configmap + Secret
+
+Add [recommended labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/#labels) to group resources.
+
+
+Add lifecycle labels to group resources according to when and what order they live in.  Ideally make your resources order-independent so these are non-existent.
+
+Add [checksum annotations](https://github.com/helm/helm/blob/master/docs/charts_tips_and_tricks.md#automatically-roll-deployments-when-configmaps-or-secrets-change).  Ensure changes when linked things change, rolling deploy when needed.
+
+## Templates
+
+## Things
+
+
+When you have a file with all your resources in it they call it a "manifest".  
