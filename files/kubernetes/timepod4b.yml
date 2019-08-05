@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: timepod4b
+spec:
+  containers:
+  - name: app
+    image: alpine
+    command:
+    - /bin/sh
+    - -c
+    - 'date -u "$(cat /etc/secret/container/FORMAT)"'
+    volumeMounts:
+    - name: container
+      mountPath: /etc/secret/container
+  volumes:
+    - name: container
+      secret:
+        secretName: timepod4b
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: timepod4b
+data:
+  FORMAT: KyVZLSVtLSVkOiVIOiVNOiVTWiAodGltZXBvZDRiKQo= # "+%Y-%m-%d:%H:%M:%SZ (timepod4b)"

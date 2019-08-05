@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: timepod3b
+spec:
+  containers:
+  - name: app
+    image: alpine
+    command:
+    - /bin/sh
+    - -c
+    - 'date -u "$(cat /etc/config/container/FORMAT)"'
+    volumeMounts:
+    - name: container
+      mountPath: /etc/config/container
+  volumes:
+    - name: container
+      configMap:
+        name: timepod3b
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: timepod3b
+data:
+  FORMAT: "+%Y-%m-%d:%H:%M:%SZ (timepod3b)"

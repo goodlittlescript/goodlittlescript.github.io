@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: timepod2
+spec:
+  containers:
+  - name: app
+    image: alpine
+    command:
+    - /bin/sh
+    - -c
+    - 'date -u "$FORMAT"'
+    env:
+    - name: FORMAT
+      value: "+%Y-%m-%d:%H:%M:%SZ (timepod2)"

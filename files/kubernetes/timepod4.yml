@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: timepod4
+spec:
+  containers:
+  - name: app
+    image: alpine
+    command:
+    - /bin/sh
+    - -c
+    - 'date -u "$FORMAT"'
+    env:
+    - name: FORMAT
+      valueFrom:
+        secretKeyRef:
+          name: timepod4
+          key: FORMAT
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: timepod4
+data:
+  FORMAT: KyVZLSVtLSVkOiVIOiVNOiVTWiAodGltZXBvZDQpCg== "+%Y-%m-%d:%H:%M:%SZ (timepod4)"

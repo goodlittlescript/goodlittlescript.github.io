@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: timepod3
+spec:
+  containers:
+  - name: app
+    image: alpine
+    command:
+    - /bin/sh
+    - -c
+    - 'date -u "$FORMAT"'
+    env:
+    - name: FORMAT
+      value: "+%Y-%m-%d:%H:%M:%SZ (timepod3)"
+    volumes:
+    - name: secret-volume
+      secret:
+        secretName: ssh-key-secret
+    containers:
+    - name: ssh-test-container
+      image: mySshImage
+      volumeMounts:
+      - name: secret-volume
+        readOnly: true
+        mountPath: "/etc/secret-volume"

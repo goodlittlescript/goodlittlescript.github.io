@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: timepod3a
+spec:
+  containers:
+  - name: app
+    image: alpine
+    command:
+    - /bin/sh
+    - -c
+    - 'date -u "$FORMAT"'
+    env:
+    - name: FORMAT
+      valueFrom:
+        configMapKeyRef:
+          name: arbitrary-name
+          key: arbitrary_key
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: arbitrary-name
+data:
+  arbitrary_key: "+%Y-%m-%d:%H:%M:%SZ (timepod3a)"
