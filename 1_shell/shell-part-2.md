@@ -1,23 +1,23 @@
 
 ## Processes
 
-![A Process](images/process-1.jpg)
+![A Process](images/shell/process-1.jpg)
 
 A process.  Inside the box is the program and the program can work with stuff in the box, like the ENV and file descriptors.  Outside the box is the os (ex linux).  The program can only reach outside the box via system calls to the os.  This is encapsulation.  The process is literally a chunk of memory the program controls.
 
-![ENV](images/process-2-env.jpg)
+![ENV](images/shell/process-2-env.jpg)
 
 The ENV is a special bit of memory that belongs to the process rather than the program.
 
-![exec](images/process-3-exec.jpg)
+![exec](images/shell/process-3-exec.jpg)
 
 A process gets its program via a system call to `exec` with an argument vector, ARGV.  ARGV is the command you type in, split into tokens.  `exec` looks along the PATH ENV variable for an executable file matching the 0th arg ($0).  Then exec loads the program into the process memory and runs it.
 
-![file descriptors](images/process-3-fds.jpg)
+![file descriptors](images/shell/process-3-fds.jpg)
 
 File descriptors let a program read/write files.  Files exist outside the process, and system calls drive the actual read/write on a file descriptor.  By default you get stdin (0) stdout (1) and stderr (2).  Calls to `open` make new file descriptors.
 
-![pid](images/process-5-pid.jpg)
+![pid](images/shell/process-5-pid.jpg)
 
 Processes are made and live in a tree of parent-child relationships.  Each process has an id (pid), which can be used to send a process a signal (ex INT or TERM).  When a process exits, it reports an exit status back to its parent.  0 is success.  Non-zero is failure.
 
