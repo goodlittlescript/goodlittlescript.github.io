@@ -1,133 +1,8 @@
 # kubernetes
 
-Links:
-
-* https://kubernetes.io/docs/home/
-
-Suggestions:
-
-Maybe skip the docs on day 1.  Like kubernetes itself the kubernetes docs are expansive and don't do a good job of getting you a good mental model.  There's loads of good stuff, but it is hard to see... they do too much and too little at the same time.  For example see the help for kubectl itself.
-
-```bash
-kubectl -h
-# Basic Commands (Beginner):
-#   ...
-#
-# Basic Commands (Intermediate):
-#   ...
-#
-```
-
-Beginner and Intermediate commands?  Later there is an "Advanced Commands".  This is a strong hint they are struggling to explain themselves.  Kubernetes has a porcelain vs plumbing problem.   It is plumbing.  The porcelain on it is useful, but hard to understand without the plumbing.
-
-Ergo I recommend you do some targeted reflection to start.  Later read the docs for specific details.  Work your way back to the the "Beginner" commands.
-
-## Reflection exercise
-
-See the help.  Take a look at the get ("Intermediate") and apply ("Advanced") commands.
-
-```bash
-kubectl -h
-kubectl get -h
-kubectl apply -h
-```
-
-Note the kind of flags under get:
-
-* --all-namespaces (suggests logical separations)
-* --selector (suggest groups - in fact grouping by labels)
-* --watch (suggests a feed of changes)
-
-Note the kind of flags under apply:
-
-* --dry-run (aka "this can be risky")
-* --prune (aka "this is why this is risky")
-* --prune-whitelist (aka "effort to mitigate risk")
-* --selector (same as under get, implying a theme of grouping by labels)
-
-Also take note of the last line in each help and go check out `kubectl options`.  Note the kind of options on that.
-
-* --cluster, --context, --server (identifies kubectl as pointing to something)
-* --user, --token (and we have to authenticate to it)
-* --namespace (and then there are logical separations)
-* -v (logging yay!)
-
-In aggregate this establishes the beginning of a mental model.  The above indicate kubectl is pointed some "control" structure (the control plane / master nodes) and that within that there is a "logical" structure (--namespace, --all-namespaces) and within that there are things that are grouped and and classified (--selector).  
-
-You don't see flags for the nodes where stuff actually runs. That too is a hint. The point of kubernetes is to give some kind of specification to the control structure, which then maps it into a logical structure.  In short kubernetes is a scheduler.
-
-Now take a look at the cluster and observe the API you're using to talk to it.
-
-```bash
-kubectl cluster-info
-# Kubernetes master is running at https://localhost:6443
-
-kubectl -v=9 cluster-info
-# ...
-# I0730 09:15:33.786679   36729 round_trippers.go:386] curl -k -v -XGET  -H "Accept: application/json, */*" -H "User-Agent: kubectl/v1.12.0 (darwin/amd64) kubernetes/0ed3388" 'https://localhost:6443/api/v1/namespaces/kube-system/services?labelSelector=kubernetes.io%2Fcluster-service%3Dtrue'
-# ...
-# I0730 09:15:33.801870   36729 request.go:942] Response Body: {"kind":"ServiceList",...
-# Kubernetes master is running at https://localhost:6443
-# KubeDNS is running at https://localhost:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-
-curl -k -v -XGET  -H "Accept: application/json, */*" -H "User-Agent: kubectl/v1.12.0 (darwin/amd64) kubernetes/0ed3388" 'https://localhost:6443/api/v1/namespaces/kube-system/services?labelSelector=kubernetes.io%2Fcluster-service%3Dtrue' | jq .
-# {
-#   "kind": "Status",
-#   "apiVersion": "v1",
-#   "metadata": {},
-#   "status": "Failure",
-#   "message": "services is forbidden: User \"system:anonymous\" cannot list services in the namespace \"kube-system\"",
-#   "reason": "Forbidden",
-#   "details": {
-#     "kind": "services"
-#   },
-#   "code": 403
-# }
-```
-
-Some kind of auth is going on here.  The details don't matter at this point because kubernetes provides a way around it; a proxy that adds your auth for you.
-
-```bash
-kubectl proxy
-# Starting to serve on 127.0.0.1:8001
-```
-
-Now go hit the proxy using http.
-
-```bash
-curl -k -v -XGET  -H "Accept: application/json, */*" -H "User-Agent: kubectl/v1.12.0 (darwin/amd64) kubernetes/0ed3388" 'http://localhost:8001/api/v1/namespaces/kube-system/services?labelSelector=kubernetes.io%2Fcluster-service%3Dtrue' | jq .
-# {
-#   "kind": "ServiceList",
-#   "apiVersion": "v1",
-#   "metadata": {
-#     "selfLink": "/api/v1/namespaces/kube-system/services",
-#     "resourceVersion": "1231721"
-#   },
-#   "items": [
-# ...
-```
-
-Observe that this ultimately is a REST api.  All commands tie back to some url.
-
-```bash
-kubectl api-resources
-kubectl api-resources -v=9 2>&1 | grep GET
-
-kubectl api-versions
-kubectl api-versions -v=9 2>&1 | grep GET
-
-kubectl get namespaces
-kubectl get namespaces -v=9 2>&1 | grep GET
-
-kubectl get pods
-kubectl get pods --all-namespaces -v=9 2>&1 | grep GET
-```
-
-Knowing this sets up the mental model to take into learning kubernetes.  The idea is to create loosely-coupled resource definitions (POST JSON blobs) that the control plane needs to translate into real resources in the cluster.  AKA there will be urls and JSON request/response bodies.
-
 ## Basic Workflow
 
-Define resources to describe what you want.  Apply them as a group, at once, so that anything left out can be pruned.
+_The plan: Define resources to describe what you want.  Apply them as a group, at once, so that anything left out can be pruned._
 
 All resources have this core shape:
 
@@ -173,6 +48,8 @@ kubectl apply resources_dir/*
 
 Resources are very verbose, so you will want to organize.  Also there's a problem - you need to line things up.  Imagine a kubernetes namespace as a bustling bazaar with independent people working in identifiable colors -- that is a cluster.  It is the way it works.
 
+<img src="./images/k8sbazaar.png" height="300">
+
 * With prune you use labels and selectors to limit what is in scope - get it wrong and you may delete lots of stuff.
 * With services you need to use labels and selectors to pick which containers belong to the service.
 * You need to associate configmaps/secrets to pods, at the very least needing name coordination.
@@ -190,19 +67,29 @@ _Sidebar: a google team achieved what the community could not, and convinced kub
 
 ## A Plan
 
-Identify components made of related "kinds" of resources.  Connect with names to make units.   Pod + Configmap + Secret
+1) Connect related resources by name to make components.
 
-* Create a Pod that prints time per ENV variable or default.
-* Apply, get status, get logs.
-* Make a configmap.  Mount as volume.  Echo, not in env.  Use deployer_exec, echo env.
-* Switch to a secret.  base64
-* Do this in default namespace.
+2) Add lifecycle labels to order the rollout of resources (ex to ensure the latest configs/secrets are available, or to make sure db migrations go before a server rollout).
+
+3) Use [checksum annotations](https://github.com/helm/helm/blob/master/docs/charts_tips_and_tricks.md#automatically-roll-deployments-when-configmaps-or-secrets-change) to ensure pod changes when configs/secrets change.
+
+4) Use namespaces to avoid further grouping (also important for secrets).
+
+### 1. Connect by name into components
+
+Kubernetes groups containers into pods; you can only run a container within a pod.  Pods have their own network, so this is a good way of getting related processes into one cohesive unit.  All these examples are in the 'examples' dir.
+
+```bash
+cd examples
+```
 
 Run a container as a pod.
 
-```
-docker run -it --rm alpine date -u "+%Y-%m-%d:%H:%M:%S (docker1)"
+```bash
+## docker version
+docker run -it --rm debian:stretch-slim date -u "+%Y-%m-%d:%H:%M:%S (docker1)"
 
+# k8s version
 kubectl get pods
 kubectl apply -f timepod1.yml
 kubectl get pods
@@ -213,8 +100,10 @@ kubectl delete pod/timepod1
 Configure with ENV variables.
 
 ```
-docker run -it -e FORMAT="+%Y-%m-%d:%H:%M:%SZ (docker2)" --rm alpine /bin/sh -c 'date -u "$FORMAT"'
+## docker version
+docker run -it -e FORMAT="+%Y-%m-%d:%H:%M:%SZ (docker2)" --rm debian:stretch-slim /bin/sh -c 'date -u "$FORMAT"'
 
+# k8s version
 kubectl get pods
 kubectl apply -f timepod2.yml
 kubectl get pods
@@ -232,9 +121,14 @@ kubectl get all
 kubectl get configmaps -o yaml
 kubectl logs timepod3
 kubectl delete pod/timepod3 configmaps/timepod3
+
+# note tracking many objects is a hassle, so reuse `-f` metaphor
+kubectl apply -f timepod3.yml
+kubectl logs timepod3
+kubectl delete -f timepod3.yml
 ```
 
-The linking is something we establish.  Conventions are helpful but ultimately it is arbitrary.
+The linking is something we establish by name.  Conventions are helpful but ultimately it is arbitrary.  The easiest thing is to link by name.
 
 ```
 kubectl apply -f timepod3a.yml
@@ -242,15 +136,7 @@ kubectl logs timepod3a
 kubectl delete pod/timepod3a configmaps/arbitrary-name
 ```
 
-Hassle keeping track of things.  Reuse the `-f` metaphor.
-
-```
-kubectl apply -f timepod3a.yml
-kubectl logs timepod3a
-kubectl delete -f timepod3a.yml
-```
-
-This does not work for many variables.  Use a volume and files.
+Writing each ENV variable does not work for many variables.  Use a volume to place each value into a file.
 
 ```
 kubectl apply -f timepod3b.yml
@@ -266,49 +152,47 @@ kubectl logs timepod3c
 kubectl delete -f timepod3c.yml
 ```
 
-Wrapper strategy is nice as all the same things work with Secrets.  Names are obnoxiously different.  Values need to be base64, NOT for security, but maybe so that arbitrary data can be used???
+Wrapper strategy is nice as all the same things work with Secrets (obnoxiously with a different set of keys).  Values need to be base64, **not** for security.  Might be they want to accommodate binary data, which only kinda makes sense as JSON can do that (albeit verbosely), but maybe it's to play nice with ENV variables?  At any rate, it's what you do.
 
 ```
-# ENCODING NOT ENCRYPTION -- NO SECURITY IN BASE64
+# ENCODING IS NOT ENCRYPTION -- NO SECURITY IN BASE64
 base64 <<<"+%Y-%m-%d:%H:%M:%SZ (timepod4)"
 base64 -D <<<"KyVZLSVtLSVkOiVIOiVNOiVTWiAodGltZXBvZDQpCg=="
 
 kubectl apply -f timepod4c.yml
-kubectl logs timepod3c
-kubectl delete -f timepod3c.yml
+kubectl logs timepod4c
+kubectl delete -f timepod4c.yml
 ```
 
+Note with secrets it is important to not directly put values into the env, as it will be highly visible.  Look back at timepod2.  You always want to either reference the value in an ENV variable, or make a volume.
 
-Use namespaces to avoid having to segment resources.  Also helps with secrets.
+```bash
+kubectl apply -f timepod2.yml
+kubectl get pod timepod2 -o json | jq '.spec.containers[].env'
+```
 
-* Apply a time pod with secret.
-* Try with 2 time pods first, use namespace resource.  Apply one.  Apply the other.  Two exist, get logs for both.
-* Try with 2 time pods, with prune.  Apply one, Apply the other.  First is gone.
-* Try with 2 namespaces, with prune.  Apply one, Apply the other, both exist.
-* Try with 1 namespace, mount the other's secret.
+It's worth reflecting on the API again.  Note api/v1, then namespace, then kind, then name.
 
-Add lifecycle labels to group resources according to when and what order they live in.  Ideally make your resources order-independent so these are non-existent, but in practice order is helpful (ex to ensure the latest configmap is what a new pod will pick up).
+```bash
+kubectl proxy &
 
-* Create pod without configmap, hangs.
-* Create configmap.  Pod now up.
-* Apply new pod with new configmap values... probably a race condition.
-* Use label to apply with select first configmap, then apply with select pod.
+kubectl get pod timepod2 -o json
+kubectl get pod timepod2 -o json -v=9 2>&1 | grep curl
+curl http://localhost:8001/api/v1/namespaces/default/pods/timepod2
 
-Add [checksum annotations](https://github.com/helm/helm/blob/master/docs/charts_tips_and_tricks.md#automatically-roll-deployments-when-configmaps-or-secrets-change).  Ensure changes when linked things change, rolling deploy when needed.
+kubectl logs timepod2
+kubectl logs timepod2 -o json -v=9 2>&1 | grep curl
+curl http://localhost:8001/api/v1/namespaces/default/pods/timepod2/log
 
-* Make pod a deployments
-* Apply without checksum
-* Change, apply without checksum, nothing happens
-* Change, apply with checksum, rolling deploy
+kubectl delete -f timepod2
+```
 
+This is SUPER easy to work with, if you have to automate.
 
-## Templates
+```bash
+kubectl apply -f timepod5.yml
+curl -s http://localhost:8001/api/v1/namespaces/namespace5/pods/timepod5
+curl -s http://localhost:8001/api/v1/namespaces/namespace5/pods/timepod5/log | grep timepod
 
-
-Add [recommended labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/#labels) to group resources.
-
-
-## Things
-
-
-When you have a file with all your resources in it they call it a "manifest".  
+kubectl delete -f timepod5.yml
+```

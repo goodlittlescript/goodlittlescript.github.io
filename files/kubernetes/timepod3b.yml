@@ -6,18 +6,18 @@ metadata:
 spec:
   containers:
   - name: app
-    image: alpine
+    image: debian:stretch-slim
     command:
     - /bin/sh
     - -c
     - 'date -u "$(cat /etc/config/container/FORMAT)"'
     volumeMounts:
-    - name: container
+    - name: config-app
       mountPath: /etc/config/container
   volumes:
-    - name: container
-      configMap:
-        name: timepod3b
+  - name: config-app
+    configMap:
+      name: timepod3b
 ---
 apiVersion: v1
 kind: ConfigMap

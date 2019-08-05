@@ -6,19 +6,19 @@ metadata:
 spec:
   containers:
   - name: app
-    image: alpine
+    image: artifactory.pinnacol.com:4001/pinnacol/deployer-debian9-ruby2.6
     command:
     - /usr/local/bin/deployer_exec
     - /bin/sh
     - -c
     - 'date -u "$FORMAT"'
     volumeMounts:
-    - name: container
+    - name: config-app
       mountPath: /etc/config/container
   volumes:
-    - name: container
-      configMap:
-        name: timepod3c
+  - name: config-app
+    configMap:
+      name: timepod3c
 ---
 apiVersion: v1
 kind: ConfigMap
