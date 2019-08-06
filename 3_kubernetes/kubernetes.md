@@ -48,7 +48,7 @@ kubectl apply resources_dir/*
 
 Resources are very verbose, so you will want to organize.  Also there's a problem - you need to line things up.  Imagine a kubernetes namespace as a bustling bazaar with independent people working in identifiable colors -- that is a cluster.  It is the way it works.
 
-<img src="./images/k8sbazaar.png" height="300">
+<img src="images/k8sbazaar.png" height="300">
 
 * With prune you use labels and selectors to limit what is in scope - get it wrong and you may delete lots of stuff.
 * With services you need to use labels and selectors to pick which containers belong to the service.
@@ -71,9 +71,9 @@ _Sidebar: a google team achieved what the community could not, and convinced kub
 
 2) Add lifecycle labels to order the rollout of resources (ex to ensure the latest configs/secrets are available, or to make sure db migrations go before a server rollout).
 
-3) Use [checksum annotations](https://github.com/helm/helm/blob/master/docs/charts_tips_and_tricks.md#automatically-roll-deployments-when-configmaps-or-secrets-change) to ensure pod changes when configs/secrets change.
+3) Use namespaces to avoid further grouping (also important for secrets).
 
-4) Use namespaces to avoid further grouping (also important for secrets).
+4) Use [checksum annotations](https://github.com/helm/helm/blob/master/docs/charts_tips_and_tricks.md#automatically-roll-deployments-when-configmaps-or-secrets-change) to ensure pod changes when configs/secrets change.
 
 ### 1. Connect by name into components
 
@@ -147,6 +147,7 @@ kubectl delete -f timepod3b.yml
 If you still like ENV variables, then add a wrapper to make the files into ENV variables.
 
 ```
+docker build -t with_env_image .
 kubectl apply -f timepod3c.yml
 kubectl logs timepod3c
 kubectl delete -f timepod3c.yml

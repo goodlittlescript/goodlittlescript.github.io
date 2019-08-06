@@ -4,6 +4,7 @@ kind: Pod
 metadata:
   name: timepod3
 spec:
+  restartPolicy: Never
   containers:
   - name: app
     image: debian:stretch-slim

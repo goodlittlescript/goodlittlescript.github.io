@@ -4,11 +4,12 @@ kind: Pod
 metadata:
   name: timepod4c
 spec:
+  restartPolicy: Never
   containers:
   - name: app
-    image: artifactory.pinnacol.com:4001/pinnacol/deployer-debian9-ruby2.6
+    image: with_env_image:latest
     command:
-    - /usr/local/bin/deployer_exec
+    - /usr/local/bin/with_env_exec
     - /bin/sh
     - -c
     - 'date -u "$FORMAT"'
