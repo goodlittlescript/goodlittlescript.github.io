@@ -6,7 +6,7 @@
 
 2) Add lifecycle labels to order the rollout of resources (ex to ensure the latest configs/secrets are available, or to make sure db migrations go before a server rollout).
 
-3) Use namespaces to avoid further grouping (also important for secrets).
+3) Use namespaces to avoid collisions.
 
 4) Use [checksum annotations](https://github.com/helm/helm/blob/master/docs/charts_tips_and_tricks.md#automatically-roll-deployments-when-configmaps-or-secrets-change) to ensure pod changes when configs/secrets change.
 
@@ -136,8 +136,6 @@ kubectl delete namespace timepod6-thesecond
 kubectl config set-context $(kubectl config current-context) --namespace=default
 ```
 
-## Use of Labels/Namespaces
-
 Labels/namespaces are generic functionality that apply to all resources, and they are fairly unavoidable in the declarative way of managing resources; simply using `--all` is typically unacceptable.
 
 Reasons:
@@ -155,13 +153,7 @@ kubectl apply -f timepod6.yml --prune --all
 # namespace/namespace5 pruned   # AAAAAHHHHARRGGGGHHHH!
 ```
 
-What this implies pretty strongly is:
-
-* Make a master list of all the things you care about.
-* Add labels to make groups.
-* Apply parts of the master list using selectors of labels.
-
-If possible then use a service account scoped to a specific namespace to reduce risk of `--all` destroying everything in the cluster.  Note also that Kubernetes is inconsistent and/or over-thought in some behaviors, sometimes to our advantage.  Example:
+Note, however that Kubernetes is inconsistent and/or over-thought in some behaviors.  Example:
 
 ```bash
 kubectl apply -f timepod5.yml
@@ -177,4 +169,35 @@ kubectl get namespaces
 # notpruned         Active        16s   # AAAAAHH... what?
 ```
 
-Here namespaces created outside of apply are magically out of scope for `--prune --all`.  No idea why (but we leverage this locally).  This kind of behavior is maddening and confusing;  simple rules there are not. It seems that if you're very specific then you get what you want.  Label, at least a bit.  It's verbose and annoying but this is plumbing not porcelain.
+Here namespaces created outside of apply are magically out of scope for `--prune --all`.  No idea why.  This kind of behavior is maddening and confusing;  simple rules there are not, and will that behavior change?  Bring on "Kubernetes the Good Parts".  Chapter 1 will say that if you're very specific then you will get what you want, and the specificity should protect against changing behavior.  
+
+Label and use selectors.  Avoid `--all`.  Doing so is verbose and annoying but this is plumbing not porcelain.
+
+## Use of Names/Labels/Namespaces
+
+Names directly link resources and are used in cases like ConfigMaps, Secrets, and PersistentVolumes.  They are fixed, direct references.  If a referenced thing is not available it will block a pod from being scheduled because the name means "link exactly to this".
+
+<img src="images/names-to-link.png" height="300">
+
+Labels group resources.  Selectors match on labels.  They are extensible; you can match 0+ with a selector. Use them to group resources for apply/delete.
+
+<img src="images/labels-for-apply.png" height="300">
+
+But labels/selectors are used in all places where an extensible collection is helpful.  Used in services to pick which pods belong to it (allowing scale up/down).  Also used in schedulers like Deployment to identify which pods are controlled by the scheduler.
+
+<img src="images/labels-for-services.png" height="300">
+
+Given the open scope of selectors and the fixed nature of names, use namespaces to avoid collisions.
+
+<img src="images/k8sbazaar.png" height="300">
+
+Once again, you really need a plan.  Ours is to:
+
+* Make a master list of all the things you care about.
+* Link components by name.
+* Dedicate component labels to make groups for schedulers and services.
+* Dedicate lifecycle labels to group resources for apply/delete.
+* Use namespaces to avoid name/label collisions.
+* In deployments use a service account scoped to each namespace to further ensure one project cannot destroying everything in the cluster.
+
+The Makefile and templates exist to write these details down.  They are porcelain.  They helps you avoid brain damage, but can be a form of it.  The intent is that you can see through it and go past it or adapt it as needed.
