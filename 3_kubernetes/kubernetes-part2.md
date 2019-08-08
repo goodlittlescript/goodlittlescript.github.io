@@ -10,7 +10,7 @@
 
 4) Use [checksum annotations](https://github.com/helm/helm/blob/master/docs/charts_tips_and_tricks.md#automatically-roll-deployments-when-configmaps-or-secrets-change) to ensure pod changes when configs/secrets change.
 
-## Labels
+## Mechanics of Labels
 
 Use labels to make groups and selectors to pick them.
 
@@ -61,13 +61,92 @@ kubectl get pods
 kubectl delete pod --all
 ```
 
-This is generic functionality that applies to all resources, and is fairly unavoidable in the prune way of managing resource (ie declarative), because `--all` is typically unacceptable. Reasons:
+Lastly labels/selection is scoped to namespaces.
 
-* Often there are natural groups you want to manage at the same time.  Ex your server components plus your shell components.  You wouldn't want creating one to destroy the other... instead it's nice to be like "make my shell", "now make my server", "now delete just my server".
+## Mechanics of Namespaces
 
-* What kubectl puts into `--all` is often not what you want.  Some things like network policies are not included by default, but NAMESPACES ARE.  So if you don't list your namespace...
+You always have a namespace, the "default" namespace by default.
+
+```bash
+kubectl get namespaces
+kubectl config get-contexts
+```
+
+Namespaces are a hassle to work with.  Lots of verbose flags and confusing things, but it gives you encapsulation for your resources.
+
+```bash
+kubectl create namespace timepod6-thefirst
+kubectl config set-context $(kubectl config current-context) --namespace=timepod6-thefirst
+kubectl apply -f timepod6.yml
+kubectl get pods
+
+kubectl create namespace timepod6-thesecond
+kubectl config set-context $(kubectl config current-context) --namespace=timepod6-thesecond
+kubectl apply -f timepod6.yml
+kubectl apply -f timepod6a.yml
+kubectl get pods
+
+kubectl get pods --all-namespaces
+```
+
+The best thing for namespaces is to make their usage transparent.  To do that we can use a configuration trick -- utilize kubeconfig files.  To understand the trick you need to know a few things.
+
+1) You have a kubeconfig file where all the `kubectl config` lives.
 
 ```
+# secrets are in this file so I'll only show the structure...
+sed -e 's/:.*/: .../' ~/.kube/config
+```
+
+2) There is an ENV variable that sets where `kubectl` looks for kubeconfig files: `KUBECONFIG`.  It is a `:` separated list of paths.  Whatever files are found are *merged*.  It's not like PATH where the first thing found is what is used... rather it's like an overlay where kubeconfig goes in reverse order so the first thing in KUBECONFIG wins.  Relative paths are ok in KUBECONFIG.
+
+3) `kubeconfig` provides some flags to help you make and manage these files.
+
+Now the trick.  Envision a directory as a namespace.  Make a `.kubeconfig` file in the directory setting the namespace according to the directory name.  Set KUBECONFIG to pickup that file.  Now whenever you enter the directory, you enter the namespace.
+
+```bash
+export KUBECONFIG=".kubeconfig:$HOME/.kube/config"
+
+mkdir timepod6-thefirst
+cd timepod6-thefirst
+kubectl config view --minify -o json | jq '{"current-context": ."current-context", contexts: .contexts}' > .kubeconfig
+kubectl --kubeconfig .kubeconfig config set-context $(kubectl config current-context) --namespace="$(basename "$PWD")"
+kubectl get pods
+cd ..
+
+mkdir timepod6-thesecond
+cd timepod6-thesecond
+kubectl config view --minify -o json | jq '{"current-context": ."current-context", contexts: .contexts}' > .kubeconfig
+kubectl --kubeconfig .kubeconfig config set-context $(kubectl config current-context) --namespace="$(basename "$PWD")"
+kubectl get pods
+cd ..
+
+kubectl get pods --all-namespaces
+```
+
+This provides an easy way to segregate apply at a level above labels.
+
+```bash
+cd timepod6-thefirst
+kubectl apply -f ../timepod6a.yml --prune -l 'group in (one)'
+kubectl get pods --all-namespaces
+
+kubectl delete namespace timepod6-thefirst
+kubectl delete namespace timepod6-thesecond
+kubectl config set-context $(kubectl config current-context) --namespace=default
+```
+
+## Use of Labels/Namespaces
+
+Labels/namespaces are generic functionality that apply to all resources, and they are fairly unavoidable in the declarative way of managing resources; simply using `--all` is typically unacceptable.
+
+Reasons:
+
+* Often there are natural groups you want to manage at the same time.  Ex your server components plus your shell components.  You don't want one to destroy the other... instead it's nice to be like "make my shell", "now make my server", "now delete just my server".
+
+* What kubectl puts into `--all` is often not what you want.  There's a default whitelist that puts some kinds of resources in scope, and leaves others out.  For example network policies are not included by default, but NAMESPACES ARE.  So if you don't list your namespace...
+
+```bash
 kubectl apply -f timepod5.yml
 kubectl apply -f timepod6.yml --prune --all
 # pod/timepod6-one-a created
@@ -78,8 +157,24 @@ kubectl apply -f timepod6.yml --prune --all
 
 What this implies pretty strongly is:
 
-* Make a master list of all the things you care about.  More that one list is ok, but one master list is easiest.
+* Make a master list of all the things you care about.
 * Add labels to make groups.
-* Apply the master list using labels for the specific parts you care about.
+* Apply parts of the master list using selectors of labels.
 
-BIG bonus is to use a service account that is scoped to a specific namespace so you don't accidentally destroy literally everything else in the cluster if you accidentally `--all` (either with the flag or by messing up the label scheme).
+If possible then use a service account scoped to a specific namespace to reduce risk of `--all` destroying everything in the cluster.  Note also that Kubernetes is inconsistent and/or over-thought in some behaviors, sometimes to our advantage.  Example:
+
+```bash
+kubectl apply -f timepod5.yml
+kubectl create namespace notpruned
+
+kubectl apply -f timepod6.yml --prune --all
+# pod/timepod6-one-a created
+# pod/timepod6-one-b created
+# pod/timepod6-two-a created
+# namespace/namespace5 pruned           # AAAAAHHHHARRGGGGHHHH!
+
+kubectl get namespaces
+# notpruned         Active        16s   # AAAAAHH... what?
+```
+
+Here namespaces created outside of apply are magically out of scope for `--prune --all`.  No idea why (but we leverage this locally).  This kind of behavior is maddening and confusing;  simple rules there are not. It seems that if you're very specific then you get what you want.  Label, at least a bit.  It's verbose and annoying but this is plumbing not porcelain.
