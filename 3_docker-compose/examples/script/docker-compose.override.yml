@@ -1,0 +1,17 @@
+---
+version: "3.6"
+services:
+  app:
+    build:
+      context: .
+      target: app
+
+  shell:
+    build:
+      context: .
+      target: shell
+    environment:
+      CONFIG: devvalue
+      SECRET:
+    volumes:
+    - .:/app

@@ -1,0 +1,3 @@
+#!/bin/bash
+printf "config: %s\n" "$CONFIG"
+printf "secret: %s\n" "$SECRET"
