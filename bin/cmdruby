@@ -2,6 +2,14 @@
 ############################################################################
 begin
   require 'optparse'
+  require 'logger'
+
+  logger = Logger.new(STDERR)
+  logger.progname = File.basename($0)
+  logger.formatter = proc do |severity, datetime, progname, msg|
+    "[#{datetime.utc.iso8601}] #{severity} #{progname} - #{msg}\n"
+  end
+  logger.level = Logger::WARN
 
   options = {
     option: false,
