@@ -11,10 +11,10 @@ images:
 	@make image VERSION=3.10
 
 run:
-	docker run -it --rm --user 900:900 $(IMAGE):$(VERSION)
+	docker run -it --rm $(IMAGE):$(VERSION)
 
 shell:
-	docker run -it --rm --user 900:900 $(IMAGE):$(VERSION)-shell /bin/bash
+	docker run -it --rm $(IMAGE):$(VERSION)-shell /bin/bash
 
 .PHONY: \
 	image \
