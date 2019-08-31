@@ -41,6 +41,6 @@ make artifacts
 
 Removes containers belonging to this project.
 
-``bash
+```bash
 make clean
 ```

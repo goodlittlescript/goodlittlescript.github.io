@@ -17,8 +17,5 @@ USER root
 RUN apt-get update && \
     apt-get install -y --no-install-recommends ca-certificates sudo vim less build-essential curl git man && \
     adduser appuser sudo && \
-    printf "%s\n" "appuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-    apt-get autoremove -y && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    printf "%s\n" "appuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 USER appuser

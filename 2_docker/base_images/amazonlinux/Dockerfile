@@ -18,6 +18,7 @@ USER appuser
 FROM base as shell
 
 USER root
-RUN yum install -y sudo vim less make automake gcc gcc-c++ kernel-devel jq git man && \
+RUN yum update -y && \
+    yum install -y sudo vim less make automake gcc gcc-c++ kernel-devel jq git man && \
     printf "%s\n" "appuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 USER appuser
