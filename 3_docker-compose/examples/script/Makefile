@@ -36,13 +36,6 @@ clean:
 	docker-compose down --remove-orphans --volumes
 
 #
-# deploy
-#
-
-artifacts:
-	make clean images test >&2
-
-#
 # utilities
 #
 
@@ -60,5 +53,4 @@ phony:
 	shell \
 	test \
 	clean \
-	artifacts \
 	phony

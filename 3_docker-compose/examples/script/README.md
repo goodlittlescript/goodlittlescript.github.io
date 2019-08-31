@@ -29,14 +29,6 @@ make logs
 make stop
 ```
 
-### Build Artifacts
-
-The idea is that this is what your CI system would run, so it should both build artifacts and confirm they are deployable.  Actual deployments would use the outputs of this command.
-
-```bash
-make artifacts
-```
-
 ### Cleanup
 
 Removes containers belonging to this project.
