@@ -2,8 +2,9 @@
 version: "3.6"
 services:
   app:
-    image: app-name
-    command: ["/app/bin/script"]
+    image: ${APPNAME}
+    command:
+    - /app/bin/script
     environment:
       CONFIG: prdvalue
       SECRET:

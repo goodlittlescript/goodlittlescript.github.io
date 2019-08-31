@@ -1,2 +1,5 @@
+# prevent building the commit history into the image
 .git
+
+# ignore .env as it often contains secrets
 .env

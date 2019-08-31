@@ -1,8 +1,12 @@
+# Set the application name and a space-delimited list of the services
+# you want started by start/stop -- ie the services that would be
+# deployed.  Leave out the shell.
+
 export APPNAME=app-name
 export SERVICES=app
 
 #
-# develop
+# development
 #
 
 images:

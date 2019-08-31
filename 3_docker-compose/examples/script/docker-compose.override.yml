@@ -1,3 +1,5 @@
+# Things in the override file are for local development only. Use this file
+# to override/extend services defined in the docker-compose.yml file.
 ---
 version: "3.6"
 services:
