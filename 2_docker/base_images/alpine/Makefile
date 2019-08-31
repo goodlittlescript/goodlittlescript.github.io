@@ -1,5 +1,5 @@
-VERSION=stable-slim
-IMAGE=goodlittlescript-debian
+VERSION=latest
+IMAGE=goodlittlescript-alpine
 
 image:
 	@docker build --compress --no-cache --build-arg VERSION=$(VERSION) --tag $(IMAGE):$(VERSION) --target base --pull . >&2
@@ -8,7 +8,7 @@ image:
 	@echo $(IMAGE):$(VERSION)-shell
 
 images:
-	@make image VERSION=buster-slim
+	@make image VERSION=3.10
 
 run:
 	docker run -it --rm --user 900:900 $(IMAGE):$(VERSION)
