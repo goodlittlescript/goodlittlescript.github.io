@@ -1,0 +1,46 @@
+#!/bin/bash
+usage () {
+printf "%s" "\
+usage: wait_for [options] CMD...
+
+  A wait loop in bash.
+
+options:
+
+  -d DESC       description
+  -h            prints help
+  -n MAX_TRIES  max number of tries
+
+"
+}
+desc=""
+args=""
+maxtries="${WAIT_FOR_MAX_TRIES:-10}"
+while getopts "d:hn:" opt
+do
+  case "$opt" in
+    (d) desc="$OPTARG" ;;
+    (h) usage
+        exit 0 ;;
+    (n) maxtries="$OPTARG" ;;
+    (*) usage | head -n 1 >&2
+        exit 1 ;;
+  esac
+done
+shift $(($OPTIND - 1))
+
+#############################################################################
+
+tries="0"
+desc="${desc:-${1}...}"
+until "$@" >/dev/null
+do
+  if [ "$tries" -ge "$maxtries" ]
+  then
+    printf "no success after %s tries (exit)\n" "$tries" >&2
+    exit 1
+  fi
+  tries="$((tries + 1))"
+  printf "waiting for %s (%s/%s)\n" "$desc" "$tries" "$maxtries" >&2
+  sleep 1
+done
