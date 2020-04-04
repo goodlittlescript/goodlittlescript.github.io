@@ -19,3 +19,6 @@ RUN apt-get update && \
     adduser appuser sudo && \
     printf "%s\n" "appuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 USER appuser
+
+# apt-get cleanup
+# rm -rf /var/lib/apt/lists/*
