@@ -1,0 +1,8 @@
+---
+layout: default
+title:  "HTML"
+date:   2020-04-11 20:09:33 +0000
+categories: examples html
+author: Simon A Chiang
+---
+<p>{{ page.date }} - Written by {{ page.author }}</p>

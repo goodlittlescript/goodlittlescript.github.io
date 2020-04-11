@@ -1,0 +1,12 @@
+---
+version: '3.6'
+services:
+  shell:
+    build:
+      network: host
+      context: .
+      target: shell
+    ports:
+        - 4000:4000
+    volumes:
+        - .:/app

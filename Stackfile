@@ -1,0 +1,41 @@
+#!/bin/bash
+# usage: ./Stackfile [command]
+
+#
+# develop
+#
+
+clean () {
+	docker-compose down --remove-orphans --rmi all
+}
+
+images () {
+	docker-compose build --compress --parallel --build-arg PACKAGE="${PACKAGE}"
+}
+
+shell () {
+	docker-compose run --rm --service-ports shell /bin/bash
+}
+
+run-serve () {
+	cd /app/site
+	jekyll serve --host=0.0.0.0 --watch --incremental
+}
+
+#
+# utility
+#
+
+list () {
+	compgen -A function 2>/dev/null
+}
+
+if list | grep -qFx "$1"
+then "$@"
+else
+	if [ -z "$1" ]
+	then printf "no command specified (try 'list')\n" >&2
+	else printf "unknown command: %s\n" "$1" >&2
+	fi
+	exit 1
+fi
