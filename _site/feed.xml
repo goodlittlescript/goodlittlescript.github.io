@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://0.0.0.0:4000/" rel="alternate" type="text/html" /><updated>2020-04-12T00:33:28+00:00</updated><id>http://0.0.0.0:4000/feed.xml</id><title type="html">GoodLittleScript</title><subtitle>Examples, notes, and experiments</subtitle><entry><title type="html">HTML</title><link href="http://0.0.0.0:4000/examples/html/2020/04/11/html.html" rel="alternate" type="text/html" title="HTML" /><published>2020-04-11T20:09:33+00:00</published><updated>2020-04-11T20:09:33+00:00</updated><id>http://0.0.0.0:4000/examples/html/2020/04/11/html</id><content type="html" xml:base="http://0.0.0.0:4000/examples/html/2020/04/11/html.html">&lt;html&gt;
-&lt;body&gt;
-&lt;a href=&quot;/&quot;&gt;home&lt;/a&gt;
-&lt;p&gt;2020-04-11 20:09:33 +0000 - Written by Simon A Chiang&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;</content><author><name>Simon A Chiang</name></author><summary type="html">home 2020-04-11 20:09:33 +0000 - Written by Simon A Chiang</summary></entry></feed>

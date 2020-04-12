@@ -17,12 +17,12 @@ shell () {
 	docker-compose run --rm --service-ports shell /bin/bash
 }
 
-run () {
-	docker-compose run --rm --service-ports shell /app/Stackfile run-server
+start () {
+	docker-compose run --rm --service-ports shell /app/Stackfile run
 }
 
-run-server () {
-	bundle exec jekyll serve --host=0.0.0.0 --watch --incremental
+run () {
+	bundle exec jekyll serve --host=0.0.0.0 --watch
 }
 
 #
