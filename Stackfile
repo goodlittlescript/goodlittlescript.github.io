@@ -10,7 +10,7 @@ clean () {
 }
 
 images () {
-	docker-compose build --compress --parallel --build-arg PACKAGE="${PACKAGE}"
+	docker-compose build --compress --parallel
 }
 
 shell () {
@@ -22,7 +22,6 @@ run () {
 }
 
 run-serve () {
-	cd /app/site
 	jekyll serve --host=0.0.0.0 --watch --incremental
 }
 
