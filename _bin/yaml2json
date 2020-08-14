@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+require 'yaml'
+require 'json'
+
+files = ARGV.dup; ARGV.clear
+files << "-" if files.empty?
+files.each do |file|
+  File.open(file == "-" ? 0 : file, "r") do |io|
+    puts YAML.load(io).to_json
+  end
+end

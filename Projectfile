@@ -33,8 +33,21 @@ start () {
 # helpers
 #
 
+log () {
+  printf "[%s] %s %s - %s\n" "$(date +%Y-%m-%dT%H-%M-%S%z)" "$1" "$(basename "$0")" "$2" >&2
+}
+
 run () {
   bundle exec jekyll serve --host=0.0.0.0 --watch
+}
+
+update () {
+  find series -name '*.yml' |
+  while read yaml_file
+  do
+    log INFO "update $yaml_file"
+    ./_bin/yaml2json "$yaml_file" | jq -Sc . > "${yaml_file%.yml}.json"
+  done
 }
 
 #
