@@ -15,5 +15,6 @@
     "x": {
       "$ref": "https://goodlittlescript.github.io/series/v0/step.schema.json"
     }
-  }
+  },
+  "additionalProperties": false
 }

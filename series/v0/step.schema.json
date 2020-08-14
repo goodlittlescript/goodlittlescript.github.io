@@ -16,5 +16,6 @@
       "type": "number",
       "default" : 10
     }
-  }
+  },
+  "additionalProperties": false
 }
