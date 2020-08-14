@@ -5,14 +5,15 @@
   "type": "object",
   "properties": {
     "m": {
-      "type": "number"
+      "type": "number",
+      "default" : 1
     },
     "b": {
-      "type": "number"
+      "type": "number",
+      "default" : 0
     },
     "x": {
       "$ref": "https://goodlittlescript.github.io/series/v0/step.schema.json"
     }
-  },
-  "required": [ "m", "b", "x" ]
+  }
 }

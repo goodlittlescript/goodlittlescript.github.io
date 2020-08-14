@@ -5,13 +5,16 @@
   "type": "object",
   "properties": {
     "start": {
-      "type": "number"
+      "type": "number",
+      "default" : 0
     },
     "step": {
-      "type": "number"
+      "type": "number",
+      "default" : 1
     },
     "num": {
-      "type": "number"
+      "type": "number",
+      "default" : 10
     }
   }
 }
