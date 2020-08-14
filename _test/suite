@@ -1,0 +1,13 @@
+#!/bin/bash
+
+test_series_valid_json () {
+  find series -name '*.json' | xargs -t -n1 jq . > /dev/null
+}
+
+test_series_valid_examples () {
+  find series -name '*.json' |
+  grep -v '.schema.json' |
+  parallel -t jsonschema -i '{}' series/v0/series.schema.json 
+}
+
+. ts -t _tmp

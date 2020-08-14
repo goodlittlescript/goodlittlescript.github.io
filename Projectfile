@@ -46,7 +46,7 @@ update () {
   while read yaml_file
   do
     log INFO "update $yaml_file"
-    ./_bin/yaml2json "$yaml_file" | jq -Sc . > "${yaml_file%.yml}.json"
+    ./_bin/yaml2json "$yaml_file" > "${yaml_file%.yml}.json"
   done
 }
 

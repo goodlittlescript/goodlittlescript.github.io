@@ -27,7 +27,7 @@
           "type": "number"
         }
       }
-    },
+    }
   },
-  "required": [ "apiVersion", "kind", "spec" ]
+  "required": [ "apiVersion", "kind" ]
 }
