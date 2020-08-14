@@ -1,0 +1,53 @@
+#!/bin/bash
+# usage: ./Projectfile [command]
+
+#
+# develop
+#
+
+images () {
+  docker-compose build --compress --parallel
+}
+
+up () {
+  docker-compose up --detach shell
+}
+
+shell () {
+  up && docker-compose exec shell /bin/bash
+}
+
+down () {
+  docker-compose stop
+}
+
+clean () {
+  docker-compose rm -s -f -v
+}
+
+start () {
+  down && docker-compose run --rm --service-ports shell /app/Projectfile run
+}
+
+#
+# helpers
+#
+
+run () {
+  bundle exec jekyll serve --host=0.0.0.0 --watch
+}
+
+#
+# utility  
+#
+
+list () {
+  compgen -A function
+}
+
+if list | grep -qFx -- "${1:-}"
+then "$@"
+else
+  printf "unknown command: %s\n" "${1:-}" >&2
+  exit 1
+fi
