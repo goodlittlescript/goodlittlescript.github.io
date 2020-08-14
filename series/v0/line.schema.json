@@ -1,0 +1,18 @@
+{
+  "$id": "https://goodlittlescript.github.io/series/v0/line.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "A line series: f(x) = mx + b",
+  "type": "object",
+  "properties": {
+    "m": {
+      "type": "number"
+    },
+    "b": {
+      "type": "number"
+    },
+    "x": {
+      "$ref": "https://goodlittlescript.github.io/series/v0/step.schema.json"
+    }
+  },
+  "required": [ "m", "b", "x" ]
+}

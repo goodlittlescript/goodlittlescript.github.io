@@ -1,0 +1,33 @@
+{
+  "$id": "https://goodlittlescript.github.io/series/v0/line.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "A series definition",
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "spec": {
+      "oneOf": [
+        { "$ref": "https://goodlittlescript.github.io/series/v0/step.schema.json" },
+        { "$ref": "https://goodlittlescript.github.io/series/v0/line.schema.json" }
+      ]
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
+      }
+    },
+  },
+  "required": [ "apiVersion", "kind", "spec" ]
+}
