@@ -1,0 +1,17 @@
+apiVersion: goodlittlescript.github.io/series/v0
+kind: Line
+spec:
+  m: 2
+  b: 1
+  x:
+    start: 0
+    step: 1
+    num: 5
+iter:
+  x: 1
+data:
+- [5, 11]
+- [6, 13]
+- [7, 15]
+- [8, 17]
+- [9, 19]

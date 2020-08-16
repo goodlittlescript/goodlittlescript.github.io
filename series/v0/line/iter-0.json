@@ -1,0 +1,1 @@
+{"apiVersion":"goodlittlescript.github.io/series/v0","kind":"Line","spec":{"m":2,"b":1,"x":{"start":0,"step":1,"num":5}},"iter":{"x":0},"data":[[0,1],[1,3],[2,5],[3,7],[4,9]]}
