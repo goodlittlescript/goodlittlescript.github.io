@@ -15,8 +15,8 @@
     },
     "spec": {
       "anyOf": [
-        { "$ref": "https://goodlittlescript.github.io/series/v0/step.schema.json" },
-        { "$ref": "https://goodlittlescript.github.io/series/v0/line.schema.json" }
+        { "$ref": "https://goodlittlescript.github.io/series/v0/step-spec.schema.json" },
+        { "$ref": "https://goodlittlescript.github.io/series/v0/line-spec.schema.json" }
       ]
     },
     "iter": {
