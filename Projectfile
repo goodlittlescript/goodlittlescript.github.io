@@ -14,7 +14,7 @@ up () {
 }
 
 shell () {
-  up && docker-compose exec shell /bin/bash
+  up && docker-compose exec shell /bin/bash -l
 }
 
 down () {
