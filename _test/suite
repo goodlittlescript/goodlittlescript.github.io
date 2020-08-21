@@ -1,11 +1,16 @@
 #!/bin/bash
 
-test_series_valid_json () {
+test_valid_json () {
   find series -name '*.json' | xargs -t -n1 jq . > /dev/null
 }
 
-test_series_valid_examples () {
+test_examples () {
   yajsv -s object.schema.json -r series/object.schema.json -r 'series/v0/*.schema.json' series/v0/*/*.{yml,json} 
 }
+
+test_data () {
+  yajsv -s object.schema.json -r series/object.schema.json -r 'series/v0/*.schema.json' data/*/*.yml
+}
+
 
 . ts -t _tmp
