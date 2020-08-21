@@ -19,11 +19,16 @@
         { "$ref": "https://goodlittlescript.github.io/series/v0/line-spec.schema.json" }
       ]
     },
-    "iter": {
-      "type": "object",
-      "additionalProperties": { "type": "number" }
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
+      }
     },
-    "data": {
+    "outputs": {
       "type": "array",
       "items": {
         "type": "array",

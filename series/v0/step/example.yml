@@ -4,7 +4,7 @@ spec:
   start: 0
   step: 1
   num: 5
-data:
+outputs:
 - [0]
 - [1]
 - [2]

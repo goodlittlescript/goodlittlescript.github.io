@@ -1,6 +1,6 @@
 apiVersion: goodlittlescript.github.io/series/v0
 kind: Step
-data:
+outputs:
 - [0]
 - [1]
 - [2]

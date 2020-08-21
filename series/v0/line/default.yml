@@ -1,6 +1,6 @@
 apiVersion: goodlittlescript.github.io/series/v0
 kind: Line
-data:
+outputs:
 - [0, 0]
 - [1, 1]
 - [2, 2]
