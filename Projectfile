@@ -42,7 +42,7 @@ run () {
 }
 
 update () {
-  find series -name '*.yml' |
+  find {series,data} -name '*.yml' |
   while read yaml_file
   do
     log INFO "update $yaml_file"
