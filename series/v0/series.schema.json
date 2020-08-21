@@ -15,26 +15,21 @@
     },
     "spec": {
       "anyOf": [
+        { "$ref": "https://goodlittlescript.github.io/series/v0/line-spec.schema.json" },
         { "$ref": "https://goodlittlescript.github.io/series/v0/step-spec.schema.json" },
-        { "$ref": "https://goodlittlescript.github.io/series/v0/line-spec.schema.json" }
+        { "$ref": "https://goodlittlescript.github.io/series/v0/string-spec.schema.json" }
       ]
     },
     "inputs": {
       "type": "array",
       "items": {
-        "type": "array",
-        "items": {
-          "type": "number"
-        }
+        "type": "array"
       }
     },
     "outputs": {
       "type": "array",
       "items": {
-        "type": "array",
-        "items": {
-          "type": "number"
-        }
+        "type": "array"
       }
     }
   },

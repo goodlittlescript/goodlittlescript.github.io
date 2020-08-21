@@ -1,0 +1,1 @@
+{"apiVersion":"goodlittlescript.github.io/series/v0","kind":"String","spec":{"charset":[":word:"],"case":"lower","min":3,"max":5},"outputs":[["abc123"],["x_y"]]}
