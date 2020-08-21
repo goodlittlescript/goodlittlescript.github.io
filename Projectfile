@@ -59,7 +59,7 @@ list () {
 }
 
 if list | grep -qFx -- "${1:-}"
-then "$@"
+then "$@"; exit $?
 else
   printf "unknown command: %s\n" "${1:-}" >&2
   exit 1
