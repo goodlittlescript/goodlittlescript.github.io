@@ -5,7 +5,7 @@ test_series_valid_json () {
 }
 
 test_series_valid_examples () {
-  yajsv  -s series/v0/series.schema.json -r 'series/v0/*.schema.json' series/v0/*/*.{yml,json} 
+  yajsv -s object.schema.json -r series/object.schema.json -r 'series/v0/*.schema.json' series/v0/*/*.{yml,json} 
 }
 
 . ts -t _tmp

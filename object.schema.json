@@ -1,0 +1,8 @@
+{
+  "$id": "https://goodlittlescript.github.io/object.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Any object defined by goodlittlescript.github.io",
+  "anyOf": [
+    { "$ref": "https://goodlittlescript.github.io/series/object.schema.json" }
+  ]
+}
