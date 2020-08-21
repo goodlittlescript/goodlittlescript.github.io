@@ -1,1 +1,26 @@
-{"apiVersion":"goodlittlescript.github.io/series/v0","kind":"Step","spec":{"start":0,"step":1,"num":5},"outputs":[[0],[1],[2],[3],[4]]}
+{
+  "apiVersion": "goodlittlescript.github.io/series/v0",
+  "kind": "Step",
+  "outputs": [
+    [
+      0
+    ],
+    [
+      1
+    ],
+    [
+      2
+    ],
+    [
+      3
+    ],
+    [
+      4
+    ]
+  ],
+  "spec": {
+    "num": 5,
+    "start": 0,
+    "step": 1
+  }
+}
