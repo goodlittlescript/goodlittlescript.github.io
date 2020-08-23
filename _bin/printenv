@@ -1,0 +1,17 @@
+#!/bin/bash
+cat <<DOC
+---
+apiVersion: goodlittlescript.github.io/series/v0
+kind: Environment
+metadata:
+  name:
+data:
+  date: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+  gid: $(id -g)
+  env:
+$(env | sort | awk -F = '{print "  - " $1}')
+  os-release: |-
+$(sed -e 's/^/    /' /etc/os-release)
+  pwd: $(pwd | sed -e "s/$USER/USER/")
+  uid: $(id -u)
+DOC
