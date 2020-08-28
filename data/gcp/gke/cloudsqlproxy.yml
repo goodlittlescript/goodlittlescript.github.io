@@ -1,0 +1,9 @@
+---
+apiVersion: goodlittlescript.github.io/series/v0
+kind: NetworkPolicy
+metadata:
+  name: gcp.cloudsqlproxy
+data:
+  ports:
+    egress:
+    - port: 3307
