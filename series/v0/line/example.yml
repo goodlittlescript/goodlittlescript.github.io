@@ -1,6 +1,6 @@
 apiVersion: goodlittlescript.github.io/series/v0
-kind: Line
-definitions:
+kind: Data
+data:
 - apiVersion: goodlittlescript.github.io/series/v0
   kind: Data
   metadata:
@@ -11,14 +11,16 @@ definitions:
   - {x: 2}
   - {x: 3}
   - {x: 4}
-inputs:
-- Data@input
-spec:
-  m: 2
-  b: 1
-data:
-- {x: 0, y: 1}
-- {x: 1, y: 3}
-- {x: 2, y: 5}
-- {x: 3, y: 7}
-- {x: 4, y: 9}
+- apiVersion: goodlittlescript.github.io/series/v0
+  kind: Line
+  inputs:
+  - Data@input
+  spec:
+    m: 2
+    b: 1
+  data:
+  - {x: 0, y: 1}
+  - {x: 1, y: 3}
+  - {x: 2, y: 5}
+  - {x: 3, y: 7}
+  - {x: 4, y: 9}

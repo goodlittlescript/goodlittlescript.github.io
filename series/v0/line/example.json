@@ -2,28 +2,6 @@
   "apiVersion": "goodlittlescript.github.io/series/v0",
   "data": [
     {
-      "x": 0,
-      "y": 1
-    },
-    {
-      "x": 1,
-      "y": 3
-    },
-    {
-      "x": 2,
-      "y": 5
-    },
-    {
-      "x": 3,
-      "y": 7
-    },
-    {
-      "x": 4,
-      "y": 9
-    }
-  ],
-  "definitions": [
-    {
       "apiVersion": "goodlittlescript.github.io/series/v0",
       "data": [
         {
@@ -46,14 +24,40 @@
       "metadata": {
         "name": "input"
       }
+    },
+    {
+      "apiVersion": "goodlittlescript.github.io/series/v0",
+      "data": [
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 3
+        },
+        {
+          "x": 2,
+          "y": 5
+        },
+        {
+          "x": 3,
+          "y": 7
+        },
+        {
+          "x": 4,
+          "y": 9
+        }
+      ],
+      "inputs": [
+        "Data@input"
+      ],
+      "kind": "Line",
+      "spec": {
+        "b": 1,
+        "m": 2
+      }
     }
   ],
-  "inputs": [
-    "Data@input"
-  ],
-  "kind": "Line",
-  "spec": {
-    "b": 1,
-    "m": 2
-  }
+  "kind": "Data"
 }

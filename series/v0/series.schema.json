@@ -13,12 +13,6 @@
     "metadata": {
       "type": "object"
     },
-    "definitions": {
-      "type": "array",
-      "items": {
-        "$ref": "https://goodlittlescript.github.io/series/v0/series.schema.json"
-      }
-    },
     "inputs": {
       "type": "array",
       "items": {
