@@ -1,0 +1,28 @@
+---
+apiVersion: goodlittlescript.github.io/series/v0
+kind: Iterator
+definitions:
+- apiVersion: goodlittlescript.github.io/series/v0
+  kind: Data
+  metadata:
+    name: input
+  data:
+  - {i: 0}
+  - {i: 1}
+inputs:
+- Data@input
+spec:
+  start: 0
+  step: 1
+  num: 5
+data:
+- {i: 0, x: 0}
+- {i: 0, x: 1}
+- {i: 0, x: 2}
+- {i: 0, x: 3}
+- {i: 0, x: 4}
+- {i: 1, x: 0}
+- {i: 1, x: 1}
+- {i: 1, x: 2}
+- {i: 1, x: 3}
+- {i: 1, x: 4}

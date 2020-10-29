@@ -1,0 +1,8 @@
+{
+  "$id": "https://goodlittlescript.github.io/series/v0/data-spec.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "A data spec",
+  "type": "object",
+  "properties": {},
+  "additionalProperties": false
+}

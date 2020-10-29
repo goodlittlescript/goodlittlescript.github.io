@@ -1,0 +1,10 @@
+{
+  "apiVersion": "goodlittlescript.github.io/series/v0",
+  "data": [
+    {}
+  ],
+  "kind": "Data",
+  "metadata": {
+    "name": "default"
+  }
+}

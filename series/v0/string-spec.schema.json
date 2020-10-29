@@ -8,12 +8,13 @@
       "type": "array",
       "items": {
         "type": "string"
-      }      
+      }
     },
     "case": {"type": "string"},
     "min": {"type": "number"},
     "max": {"type": "number"},
     "sep": {"type": "string"},
+    "seed": {"type": "number"},
     "patterns": {
       "type": "array",
       "items": {

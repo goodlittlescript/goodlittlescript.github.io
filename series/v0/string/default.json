@@ -1,0 +1,61 @@
+{
+  "apiVersion": "goodlittlescript.github.io/series/v0",
+  "data": [
+    {
+      "str": ".....",
+      "x": 0
+    },
+    {
+      "str": ".....",
+      "x": 1
+    },
+    {
+      "str": ".....",
+      "x": 2
+    },
+    {
+      "str": ".....",
+      "x": 3
+    },
+    {
+      "str": ".....",
+      "x": 4
+    },
+    {
+      "str": ".....",
+      "x": 5
+    },
+    {
+      "str": ".....",
+      "x": 6
+    },
+    {
+      "str": ".....",
+      "x": 7
+    },
+    {
+      "str": ".....",
+      "x": 8
+    },
+    {
+      "str": ".....",
+      "x": 9
+    }
+  ],
+  "inputs": [
+    "Iterator@default"
+  ],
+  "kind": "String",
+  "metadata": {
+    "name": "default"
+  },
+  "spec": {
+    "case": "mixed",
+    "charset": [
+      ":alnum:"
+    ],
+    "max": 5,
+    "min": 3,
+    "seed": 0
+  }
+}

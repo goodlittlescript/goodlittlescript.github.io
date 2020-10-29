@@ -13,23 +13,30 @@
     "metadata": {
       "type": "object"
     },
-    "spec": {
-      "anyOf": [
-        { "$ref": "https://goodlittlescript.github.io/series/v0/line-spec.schema.json" },
-        { "$ref": "https://goodlittlescript.github.io/series/v0/step-spec.schema.json" },
-        { "$ref": "https://goodlittlescript.github.io/series/v0/string-spec.schema.json" }
-      ]
+    "definitions": {
+      "type": "array",
+      "items": {
+        "$ref": "https://goodlittlescript.github.io/series/v0/series.schema.json"
+      }
     },
     "inputs": {
       "type": "array",
       "items": {
-        "type": "array"
+        "type": "string"
       }
     },
-    "outputs": {
+    "spec": {
+      "anyOf": [
+        { "$ref": "https://goodlittlescript.github.io/series/v0/data-spec.schema.json" },
+        { "$ref": "https://goodlittlescript.github.io/series/v0/iterator-spec.schema.json" },
+        { "$ref": "https://goodlittlescript.github.io/series/v0/line-spec.schema.json" },
+        { "$ref": "https://goodlittlescript.github.io/series/v0/string-spec.schema.json" }
+      ]
+    },
+    "data": {
       "type": "array",
       "items": {
-        "type": "array"
+        "type": "object"
       }
     }
   },

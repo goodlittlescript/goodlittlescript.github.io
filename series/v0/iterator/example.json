@@ -1,0 +1,71 @@
+{
+  "apiVersion": "goodlittlescript.github.io/series/v0",
+  "data": [
+    {
+      "i": 0,
+      "x": 0
+    },
+    {
+      "i": 0,
+      "x": 1
+    },
+    {
+      "i": 0,
+      "x": 2
+    },
+    {
+      "i": 0,
+      "x": 3
+    },
+    {
+      "i": 0,
+      "x": 4
+    },
+    {
+      "i": 1,
+      "x": 0
+    },
+    {
+      "i": 1,
+      "x": 1
+    },
+    {
+      "i": 1,
+      "x": 2
+    },
+    {
+      "i": 1,
+      "x": 3
+    },
+    {
+      "i": 1,
+      "x": 4
+    }
+  ],
+  "definitions": [
+    {
+      "apiVersion": "goodlittlescript.github.io/series/v0",
+      "data": [
+        {
+          "i": 0
+        },
+        {
+          "i": 1
+        }
+      ],
+      "kind": "Data",
+      "metadata": {
+        "name": "input"
+      }
+    }
+  ],
+  "inputs": [
+    "Data@input"
+  ],
+  "kind": "Iterator",
+  "spec": {
+    "num": 5,
+    "start": 0,
+    "step": 1
+  }
+}

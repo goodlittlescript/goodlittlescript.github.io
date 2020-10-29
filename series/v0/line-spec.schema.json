@@ -11,9 +11,6 @@
     "b": {
       "type": "number",
       "default" : 0
-    },
-    "x": {
-      "$ref": "https://goodlittlescript.github.io/series/v0/step.schema.json"
     }
   },
   "additionalProperties": false
