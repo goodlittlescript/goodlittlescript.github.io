@@ -1,0 +1,29 @@
+---
+apiVersion: goodlittlescript.github.io/series/v0
+kind: String
+metadata:
+  name: "kubernetes.name"
+  references:
+  - url: "https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names"
+    notes:
+    - |-
+      Most resource types require a name that can be used as a DNS subdomain name as defined in RFC 1123. This means the name must:
+
+      - contain no more than 253 characters
+      - contain only lowercase alphanumeric characters, '-' or '.'
+      - start with an alphanumeric character
+      - end with an alphanumeric character
+spec:
+  charset:
+  - alnum
+  - "-"
+  - "."
+  case: lower
+  min: 1
+  max: 253
+  sep: "-"
+  patterns:
+  - name: typical
+    regexp: "[a-z0-9][a-z0-9.-]*[a-z0-9]{1,21}"
+  - name: valid
+    regexp: "[a-z0-9]([a-z0-9.-]*[a-z0-9])?{1,253}"

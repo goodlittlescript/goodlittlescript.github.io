@@ -1,0 +1,29 @@
+---
+apiVersion: goodlittlescript.github.io/series/v0
+kind: String
+metadata:
+  name: "kubernetes.name"
+  references:
+  - url: "https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-label-names"
+    notes:
+    - |-
+      Some resource types require their names to follow the DNS label standard as defined in RFC 1123. This means the name must:
+
+      - contain at most 63 characters
+      - contain only lowercase alphanumeric characters or '-'
+      - start with an alphanumeric character
+      - end with an alphanumeric character
+spec:
+  charset:
+  - alnum
+  - "-"
+  - "."
+  case: lower
+  min: 1
+  max: 63
+  sep: "-"
+  patterns:
+  - name: typical
+    regexp: "[a-z0-9][a-z0-9.-]*[a-z0-9]{1,21}"
+  - name: valid
+    regexp: "[a-z0-9]([a-z0-9.-]*[a-z0-9])?{1,63}"
