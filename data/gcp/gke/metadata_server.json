@@ -1,0 +1,16 @@
+{
+  "apiVersion": "goodlittlescript.github.io/series/v0",
+  "data": {
+    "ports": {
+      "egress": [
+        {
+          "port": 988
+        }
+      ]
+    }
+  },
+  "kind": "NetworkPolicy",
+  "metadata": {
+    "name": "gcp.gke.metadata_server"
+  }
+}

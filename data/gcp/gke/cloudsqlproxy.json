@@ -1,0 +1,16 @@
+{
+  "apiVersion": "goodlittlescript.github.io/series/v0",
+  "data": {
+    "ports": {
+      "egress": [
+        {
+          "port": 3307
+        }
+      ]
+    }
+  },
+  "kind": "NetworkPolicy",
+  "metadata": {
+    "name": "gcp.cloudsqlproxy"
+  }
+}
