@@ -1,0 +1,4 @@
+edges:
+- [process, data]
+- [data, types]
+- [data, text]

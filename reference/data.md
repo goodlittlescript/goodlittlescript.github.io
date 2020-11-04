@@ -1,12 +1,9 @@
-Data takes many forms but mostly:
+Data as a process sees it consists of:
 
-- Boolean
-- Number
-- String
-- List
-- Dict
-- Null
+- ARGV
+- ENV variables
+- Streams a process can read/write
 
-Lists and Dicts are the two main data structures. When you nest dictionaries they become a Tree, which is a special type of Graph. Notably they take the form of nested dicts, not something else.
+Streams are typically local files, but they are also what you receive when you make an HTTP request, or what you read when you access things that look like files (a volume mounted in any fashion). Various things handle the details. To a process it all looks like a stream of 1s and 0s.
 
-It's usually best to think of data as strings with some structure to them, that translate into the actual data types. Everything is text.
+To give structure to a stream we make formats and encode types into those formats.
