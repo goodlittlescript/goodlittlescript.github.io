@@ -1,15 +1,15 @@
 ---
-apiVersion: goodlittlescript.github.io/series/v0
+apiVersion: goodlittlescript.github.io/schemas/series/v0
 kind: Data
 data:
-- apiVersion: goodlittlescript.github.io/series/v0
+- apiVersion: goodlittlescript.github.io/schemas/series/v0
   kind: Data
   metadata:
     name: input
   output:
   - {i: 0}
   - {i: 1}
-- apiVersion: goodlittlescript.github.io/series/v0
+- apiVersion: goodlittlescript.github.io/schemas/series/v0
   kind: Iterator
   inputs:
   - Data@input

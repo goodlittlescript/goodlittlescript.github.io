@@ -1,5 +1,5 @@
 {
-  "$id": "https://goodlittlescript.github.io/series/v0/iterator-spec.schema.json",
+  "$id": "https://goodlittlescript.github.io/schemas/series/v0/iterator-spec.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "description": "An iteration series: n1 = n0 + step",
   "type": "object",

@@ -1,7 +1,7 @@
-apiVersion: goodlittlescript.github.io/series/v0
+apiVersion: goodlittlescript.github.io/schemas/series/v0
 kind: Data
 data:
-- apiVersion: goodlittlescript.github.io/series/v0
+- apiVersion: goodlittlescript.github.io/schemas/series/v0
   kind: Data
   metadata:
     name: input
@@ -11,7 +11,7 @@ data:
   - {x: 2}
   - {x: 3}
   - {x: 4}
-- apiVersion: goodlittlescript.github.io/series/v0
+- apiVersion: goodlittlescript.github.io/schemas/series/v0
   kind: Line
   inputs:
   - Data@input

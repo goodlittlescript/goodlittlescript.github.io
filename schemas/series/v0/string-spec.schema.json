@@ -1,5 +1,5 @@
 {
-  "$id": "https://goodlittlescript.github.io/series/v0/string-spec.schema.json",
+  "$id": "https://goodlittlescript.github.io/schemas/series/v0/string-spec.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "description": "A string definition",
   "type": "object",

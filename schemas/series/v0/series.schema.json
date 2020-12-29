@@ -1,5 +1,5 @@
 {
-  "$id": "https://goodlittlescript.github.io/series/v0/series.schema.json",
+  "$id": "https://goodlittlescript.github.io/schemas/series/v0/series.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "description": "A series definition",
   "type": "object",
@@ -21,10 +21,10 @@
     },
     "spec": {
       "anyOf": [
-        { "$ref": "https://goodlittlescript.github.io/series/v0/data-spec.schema.json" },
-        { "$ref": "https://goodlittlescript.github.io/series/v0/iterator-spec.schema.json" },
-        { "$ref": "https://goodlittlescript.github.io/series/v0/line-spec.schema.json" },
-        { "$ref": "https://goodlittlescript.github.io/series/v0/string-spec.schema.json" }
+        { "$ref": "https://goodlittlescript.github.io/schemas/series/v0/data-spec.schema.json" },
+        { "$ref": "https://goodlittlescript.github.io/schemas/series/v0/iterator-spec.schema.json" },
+        { "$ref": "https://goodlittlescript.github.io/schemas/series/v0/line-spec.schema.json" },
+        { "$ref": "https://goodlittlescript.github.io/schemas/series/v0/string-spec.schema.json" }
       ]
     },
     "data": {
