@@ -4,13 +4,7 @@ metadata:
   name: default
 inputs:
 - Iterator@default
-spec:
-  charset: [":alnum:"]
-  case: mixed
-  min: 3
-  max: 5
-  seed: 0
-data:
+output:
 - {x: 0, str: "....."}
 - {x: 1, str: "....."}
 - {x: 2, str: "....."}
@@ -21,3 +15,9 @@ data:
 - {x: 7, str: "....."}
 - {x: 8, str: "....."}
 - {x: 9, str: "....."}
+spec:
+  charset: [":alnum:"]
+  case: mixed
+  min: 3
+  max: 5
+  seed: 0

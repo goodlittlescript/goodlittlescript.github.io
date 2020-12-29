@@ -5,7 +5,7 @@ data:
   kind: Data
   metadata:
     name: input
-  data:
+  output:
   - {x: 0}
   - {x: 1}
   - {x: 2}
@@ -15,12 +15,12 @@ data:
   kind: Line
   inputs:
   - Data@input
-  spec:
-    m: 2
-    b: 1
-  data:
+  output:
   - {x: 0, y: 1}
   - {x: 1, y: 3}
   - {x: 2, y: 5}
   - {x: 3, y: 7}
   - {x: 4, y: 9}
+  spec:
+    m: 2
+    b: 1

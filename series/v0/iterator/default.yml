@@ -5,11 +5,7 @@ metadata:
   name: default
 inputs:
 - Data@default
-spec:
-  start: 0
-  step: 1
-  num: 10
-data:
+output:
 - {x: 0}
 - {x: 1}
 - {x: 2}
@@ -20,3 +16,7 @@ data:
 - {x: 7}
 - {x: 8}
 - {x: 9}
+spec:
+  start: 0
+  step: 1
+  num: 10

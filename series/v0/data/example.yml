@@ -1,7 +1,7 @@
 ---
 apiVersion: goodlittlescript.github.io/series/v0
 kind: Data
-data:
+output:
 - {x: 0}
 - {x: 1}
 - {x: 2}
