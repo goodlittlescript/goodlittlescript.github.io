@@ -6,53 +6,34 @@
 #
 
 images () {
-  docker-compose build --compress --parallel
+  docker compose build --parallel
 }
 
 up () {
-  docker-compose up --detach shell
+  docker compose up --detach shell
 }
 
 shell () {
-  up && docker-compose exec shell /bin/bash -l
+  touch tmp/home/.bash_history
+  up && docker compose exec shell /bin/bash -l
+}
+
+rootshell () {
+  up && docker compose exec -u root shell /bin/bash -l
 }
 
 down () {
-  docker-compose stop
+  docker compose stop
 }
 
 clean () {
-  docker-compose rm -s -f -v
-}
-
-start () {
-  down && docker-compose run --rm --service-ports shell /app/Projectfile run
-}
-
-#
-# helpers
-#
-
-log () {
-  printf "[%s] %s %s - %s\n" "$(date +%Y-%m-%dT%H-%M-%S%z)" "$1" "$(basename "$0")" "$2" >&2
-}
-
-run () {
-  bundle exec jekyll serve --host=0.0.0.0 --watch
-}
-
-update () {
-  find {series,data} -name '*.yml' |
-  while read yaml_file
-  do
-    log INFO "update $yaml_file"
-    ./_bin/yaml2json "$yaml_file" | jq -S . > "${yaml_file%.yml}.json"
-  done
+  docker compose rm -s -f -v
 }
 
 #
 # utility
 #
+set -e
 
 list () {
   compgen -A function
