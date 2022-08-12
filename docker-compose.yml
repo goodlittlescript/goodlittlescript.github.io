@@ -8,5 +8,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-    - .:/app
-    - ./tmp/home:/home/appuser
+    - $PWD:/app
+    - $PWD/tmp/home/.bash_history:/home/appuser/.bash_history
+    - $HOME/.gitconfig:/home/appuser/.gitconfig
+    - $HOME/.ssh:/home/appuser/.ssh
