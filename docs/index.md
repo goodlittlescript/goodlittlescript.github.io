@@ -1,7 +1,7 @@
 # Getting Started
 
-Good little scripts need good little examples.
+Technical notes from GoodLittleScript.
 
 ## Examples
 
-- [All the cats](examples/allthecats)
+- [All the cats](examples/allthecats) - shell scripts

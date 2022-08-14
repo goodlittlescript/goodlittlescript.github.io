@@ -1,6 +1,6 @@
 # All the cats
 
-A series of projects reimplementing the standard utility `cat`. The goal is to provide a working template for making a shell command in various languages, with the essentials, including:
+A series of projects reimplementing the standard utility `cat`. The goal is to provide a working template for processing a bunch of files, with the essentials, including:
 
 - Use of args, flags, help (standard library only)
 - Stream handling
