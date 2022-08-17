@@ -2,3 +2,8 @@ site_name: GoodLittleScript
 remote_branch: master
 theme:
   name: material
+markdown_extensions:
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
