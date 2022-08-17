@@ -18,6 +18,7 @@ Examples are essential.
 - [All the cats](examples/allthecats) - shell scripts
 - [Boom Api](examples/boomapi) - basic api
 - [Basics App](examples/basicsapp) - basic app using typical utilities
+- [All the sites](examples/allthesites) - make a website using a variety of tools and deployment platforms 
 
 ## Learning
 
