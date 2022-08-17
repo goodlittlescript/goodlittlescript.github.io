@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: timepod6-one-a
+  labels:
+    group: one
+spec:
+  restartPolicy: Never
+  containers:
+  - name: app
+    image: debian:stretch-slim
+    command:
+    - date
+    - -u
+    - "+%Y-%m-%d:%H:%M:%SZ (timepod6-one-a)"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: timepod6-one-b
+  labels:
+    group: one
+spec:
+  restartPolicy: Never
+  containers:
+  - name: app
+    image: debian:stretch-slim
+    command:
+    - date
+    - -u
+    - "+%Y-%m-%d:%H:%M:%SZ (timepod6-one-b)"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: timepod6-two-a
+  labels:
+    group: two
+spec:
+  restartPolicy: Never
+  containers:
+  - name: app
+    image: debian:stretch-slim
+    command:
+    - date
+    - -u
+    - "+%Y-%m-%d:%H:%M:%SZ (timepod6-two-a)"

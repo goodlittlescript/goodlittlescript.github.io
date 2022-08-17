@@ -1,0 +1,22 @@
+# Things in the override file are for local development only. Use this file
+# to override/extend services defined in the docker-compose.yml file.
+---
+version: "3.6"
+services:
+  app:
+    build:
+      context: .
+      target: app
+
+  shell:
+    build:
+      context: .
+      target: shell
+    command:
+    - /bin/sleep
+    - "30758400"
+    environment:
+      CONFIG: devvalue
+      SECRET:
+    volumes:
+    - .:/app

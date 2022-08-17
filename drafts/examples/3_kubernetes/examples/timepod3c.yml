@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: timepod3c
+spec:
+  restartPolicy: Never
+  containers:
+  - name: app
+    image: with_env_image:latest
+    command:
+    - /usr/local/bin/with_env_exec
+    - /bin/sh
+    - -c
+    - 'date -u "$FORMAT"'
+    volumeMounts:
+    - name: config-app
+      mountPath: /etc/config/container
+  volumes:
+  - name: config-app
+    configMap:
+      name: timepod3c
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: timepod3c
+data:
+  FORMAT: "+%Y-%m-%d:%H:%M:%SZ (timepod3c)"

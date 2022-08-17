@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: timepod4c
+spec:
+  restartPolicy: Never
+  containers:
+  - name: app
+    image: with_env_image:latest
+    command:
+    - /usr/local/bin/with_env_exec
+    - /bin/sh
+    - -c
+    - 'date -u "$FORMAT"'
+    volumeMounts:
+    - name: secret-app
+      mountPath: /etc/config/container
+  volumes:
+  - name: secret-app
+    secret:
+      secretName: timepod4c
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: timepod4c
+data:
+  FORMAT: KyVZLSVtLSVkOiVIOiVNOiVTWiAodGltZXBvZDRjKQo= # "+%Y-%m-%d:%H:%M:%SZ (timepod4c)"

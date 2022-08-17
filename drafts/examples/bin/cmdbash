@@ -1,0 +1,82 @@
+#!/bin/bash
+#############################################################################
+cmdbash_usage () {
+printf "%s" "\
+usage: cmdbash [options] NAMED_ARG VARIABLE_ARGS...
+
+  A shell-friendly command in bash.  Option parsing is limited to short
+  options but allow options to be specified anywhere in ARGV.
+
+examples:
+
+  ./bin/cmdbash -h
+  ./bin/cmdbash abc
+  ./bin/cmdbash abc x y z
+  ./bin/cmdbash abc x y z -v override
+  ./bin/cmdbash -v override abc x y z -o
+  ./bin/cmdbash -v override abc x y z -o -h
+
+  export CMDBASH_VALUE=override
+  ./bin/cmdbash abc x y z
+
+  ./bin/cmdbash
+  ./bin/cmdbash -x
+
+options:
+
+  -h        prints help
+  -o        option
+  -v VALUE  option with a value
+
+"
+}
+option="false"
+value="${CMDBASH_VALUE:-default}"
+args=""
+while [ $OPTIND -le $# ]
+do
+  if getopts "hov:" opt
+  then
+    case "$opt" in
+      (h) cmdbash_usage
+          exit 0 ;;
+      (o) option="true" ;;
+      (v) value="$OPTARG" ;;
+      (*) cmdbash_usage | head -n 1 >&2
+          exit 1 ;;
+    esac
+  else
+    args="$args \"\${$OPTIND}\""
+    OPTIND=$(($OPTIND + 1))
+  fi
+done
+eval set -- "$args"
+
+if [ $# -lt 1 ]
+then
+  printf "no NAMED_ARG specified\n" >&2
+  exit 1
+fi
+
+#############################################################################
+log () {
+  printf "[%s] %s %s - %s\n" "$(date -u +%Y-%m-%dT%H-%M-%S%z)" "$1" "$(basename "$0")" "$2" >&2
+}
+
+write_output () {
+  local key="$1";
+  local value="$2";
+  shift 2
+  printf "%-15s %s\n" "$key" "$value"
+}
+#############################################################################
+named_arg="$1"
+shift 1
+
+log INFO ""
+write_output "option" "$option"
+write_output "value" "$value"
+write_output "named_arg" "$named_arg"
+for variable_arg in "$@"
+do write_output "variable_arg" "$variable_arg"
+done

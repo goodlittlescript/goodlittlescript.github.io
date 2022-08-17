@@ -1,0 +1,4 @@
+#!/usr/bin/env jq -n -f
+{
+  a: "b"
+}

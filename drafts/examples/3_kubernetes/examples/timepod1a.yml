@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: timepod1a
+spec:
+  restartPolicy: Never
+  containers:
+  - name: app
+    image: debian:stretch-slim
+    command:
+    - date
+    - -u
+    - "+%Y-%m-%d:%H:%M:%SZ (timepod1)"

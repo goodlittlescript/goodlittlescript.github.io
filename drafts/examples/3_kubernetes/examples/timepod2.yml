@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: timepod2
+spec:
+  restartPolicy: Never
+  containers:
+  - name: app
+    image: debian:stretch-slim
+    command:
+    - /bin/sh
+    - -c
+    - 'date -u "$FORMAT"'
+    env:
+    - name: FORMAT
+      value: "+%Y-%m-%d:%H:%M:%SZ (timepod2)"

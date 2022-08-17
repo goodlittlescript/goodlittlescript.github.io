@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: timepod3
+spec:
+  restartPolicy: Never
+  containers:
+  - name: app
+    image: debian:stretch-slim
+    command:
+    - /bin/sh
+    - -c
+    - 'date -u "$FORMAT"'
+    env:
+    - name: FORMAT
+      valueFrom:
+        configMapKeyRef:
+          name: timepod3
+          key: FORMAT
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: timepod3
+data:
+  FORMAT: "+%Y-%m-%d:%H:%M:%SZ (timepod3)"
