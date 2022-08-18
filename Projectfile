@@ -39,6 +39,10 @@ run () {
   docker compose run --service-ports shell ./bin/run
 }
 
+deploy () {
+  docker compose run shell ./bin/deploy
+}
+
 #
 # utility
 #
