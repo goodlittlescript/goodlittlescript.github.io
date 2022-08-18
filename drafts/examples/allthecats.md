@@ -1,3 +1,24 @@
+# All the cats
+
+Many useful operations packaged for the command line, in the spirit of `cat`, extended to `cp`.
+
+## Rationale
+
+First this is a bit of an art project.  Second, this really is a useful pattern.  [Design programs to be connected to other programs](http://www.catb.org/~esr/writings/taoup/html/ch01s06.html#id2877684).
+
+Building `cat` illustrates several fundamentals of a language like iteration, IO, and os interaction.  Parsing flags brings up the standard library.  Extending `cat` to `cp` brings up reuse and encapsulation. It's a useful exercise.  One helpful to repeat in many languages.
+
+Also it's an excuse to read the POSIX spec.
+
+Reading the POSIX spec opens the world.  To read a manpage is to know history and possibility.  It is one of the few things that has and will endure, one of the few things you can expect to work "everywhere".  When you find yourself on a desert island of a server, fighting for survival, you will have nothing, but you will have POSIX.
+
+Specifically you'll have these sections:
+
+* [Shell Command Language](https://pubs.opengroup.org/onlinepubs/000095399/idx/shell.html) -- wherein you learn the common denominator under bash, dash, zsh, sh.
+* [Utilities](https://pubs.opengroup.org/onlinepubs/000095399/idx/utilities.html) -- wherein you learn what commands and flags are actually portable, and which are the quirky preference of some developer somewhere.
+
+Learn these pattern and humble `cat` becomes a foundation of productivity.  No need to build.  Just use.  And ponder.  And appreciate, then marvel at how much is simple text and transform.
+
 
 ## Example
 

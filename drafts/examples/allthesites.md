@@ -1,6 +1,9 @@
 # All the sites
 
-Building a website in multiple ways, for multiple cloud service providers, using multiple deployment pipelines. The goal is mostly to show how to wire pipelines with identities, build, infrastructure, and deploy stages.
+Building a website in multiple ways, for multiple cloud service providers, using multiple deployment pipelines. Goals are to demonstrate how to:
+
+- Wire pipelines with identities, build, infrastructure, and deploy stages.
+- Serve static assets from cloud providers.
 
 ## Implementations
 
