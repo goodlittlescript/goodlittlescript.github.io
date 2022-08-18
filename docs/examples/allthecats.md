@@ -8,7 +8,7 @@ A series of projects reimplementing the standard utility `cat`. The goal is to p
 
 ## Implementations
 
-- [gocat](https://github.com/goodlittlescript/gocat)
+<!-- - [gocat](https://github.com/goodlittlescript/gocat) -->
 - [pycat](https://github.com/goodlittlescript/pycat)
 - [rbcat](https://github.com/goodlittlescript/rbcat)
 - [bashcat](https://github.com/goodlittlescript/bashcat)
