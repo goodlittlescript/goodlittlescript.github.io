@@ -36,7 +36,7 @@ clean () {
 
 run () {
   (sleep 3.5; open http://localhost:8000) &
-  docker compose run --service-ports shell ./bin/run
+  docker compose run --rm --service-ports shell ./bin/run
 }
 
 deploy () {
