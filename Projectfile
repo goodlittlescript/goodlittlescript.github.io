@@ -35,7 +35,7 @@ clean () {
 #
 
 docs () {
-  docker compose run --rm --service-ports docs
+  docker compose run --rm --service-ports docs "$@"
 }
 
 #
