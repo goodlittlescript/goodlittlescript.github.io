@@ -12,6 +12,8 @@ data:
 $(env | sort | awk -F = '{print "  - " $1}')
   os-release: |-
 $(sed -e 's/^/    /' /etc/os-release)
-  pwd: $(pwd | sed -e "s/$USER/USER/")
+  uname: $(uname)
+  whoami: $(whoami)
+  pwd: $(pwd)
   uid: $(id -u)
 DOC
