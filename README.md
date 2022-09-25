@@ -2,20 +2,10 @@
 
 ## Development
 
-Get a shell:
+Preview docs:
 
 ```shell
-./Projectfile shell
-```
-
-Then:
-
-```shell
-# preview
-./bin/run
-
-# test
-./test/suite
+./Projectfile docs
 ```
 
 Deploys occur on push to main.

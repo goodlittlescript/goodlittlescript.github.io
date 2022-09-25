@@ -5,8 +5,13 @@ services:
     build:
       dockerfile: Dockerfile
     command: [/bin/sleep, "86400"]
-    ports:
-      - "8000:8000"
     volumes:
     - $PWD:/app
     - $PWD/tmp/home/.bash_history:/home/appuser/.bash_history
+
+  docs:
+    image: squidfunk/mkdocs-material
+    ports:
+      - "8000:8000"
+    volumes:
+      - $PWD:/docs
