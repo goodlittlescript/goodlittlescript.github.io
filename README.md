@@ -16,10 +16,6 @@ Then:
 
 # test
 ./test/suite
-
-
-# deploy
-./bin/deploy
 ```
 
-Deploys will make a new commit to master and push it to github.
+Deploys occur on push to main.

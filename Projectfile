@@ -34,13 +34,17 @@ clean () {
 # helpers
 #
 
+test () {
+  docker compose run shell ./test/suite
+}
+
+build () {
+  docker compose run shell ./bin/build
+}
+
 run () {
   (sleep 3.5; open http://localhost:8000) &
   docker compose run --rm --service-ports shell ./bin/run
-}
-
-deploy () {
-  docker compose run shell ./bin/deploy
 }
 
 #
